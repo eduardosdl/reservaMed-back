@@ -6,6 +6,8 @@ import com.api.reservamed.model.PatientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.util.Optional;
+
 
 @RestController
 @RequestMapping("/patients")
@@ -22,6 +24,16 @@ public class PatientController {
     public ResponseEntity getAll(){
         var AllPatients = repository.findAll();
         return ResponseEntity.ok().body(AllPatients);
+    }
+
+    @GetMapping("/{cpf}")
+    public ResponseEntity<Patient> getByCpf(@PathVariable String cpf) {
+        Patient patient = repository.findByCpf(cpf);
+        if (patient != null) {
+            return ResponseEntity.ok(patient);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PostMapping
