@@ -1,5 +1,6 @@
 package com.api.reservamed.model;
 
+import com.api.reservamed.dtos.DadosCadastroPaciente;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -26,5 +27,13 @@ public class Paciente {
 
     @Embedded
     private Endereco endereco;
+
+    public Paciente(DadosCadastroPaciente requestPaciente){
+        this.nome = requestPaciente.nome();
+        this.dataNascimento = requestPaciente.dataNascimento();
+        this.cpf = requestPaciente.cpf();
+        this.telefone = requestPaciente.telefone();
+        this.email = requestPaciente.email();
+    }
 
 }

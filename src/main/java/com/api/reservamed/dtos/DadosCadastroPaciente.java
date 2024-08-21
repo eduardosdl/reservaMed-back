@@ -6,12 +6,10 @@ import jakarta.validation.constraints.NotBlank;
 
 import java.time.LocalDate;
 
-public record DadosCadastroPaciente(@NotBlank String nome,
+public record DadosCadastroPaciente(Long id,
+                                    @NotBlank String nome,
                                     @NotBlank LocalDate dataNascimento,
                                     @NotBlank String cpf,
                                     @NotBlank String telefone,
-                                    @Email @NotBlank String email,
-                                    @Valid DadosEndereco endereco,
-                                    @Valid DadosHistoricoMedico dadosHistoricoMedico,
-                                    @Valid DadosAlergia dadosAlergia) {
+                                    @Email @NotBlank String email) {
 }
