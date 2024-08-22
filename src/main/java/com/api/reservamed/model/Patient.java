@@ -6,10 +6,9 @@ import lombok.*;
 
 import java.time.LocalDate;
 
-@Entity(name = "paciente")
-@Table(name = "paciente")
-@Getter
-@Setter
+@Entity(name = "patient")
+@Table(name = "patient")
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
@@ -20,13 +19,17 @@ public class Patient {
 
     private String name;
     private LocalDate birthDate;
+
+    @Column(unique = true, nullable = false)
     private String cpf;
+
     private String cellPhone;
     private String email;
-    private Boolean ativo;
-
-    @Embedded
-    private Endereco endereco;
+    private Boolean ativo = true;
+    private String cep;
+    private String street;
+    private String state;
+    private String city;
 
     public Patient(PatientRegistrationData requestPatient){
         this.name = requestPatient.name();
@@ -34,6 +37,10 @@ public class Patient {
         this.cpf = requestPatient.cpf();
         this.cellPhone = requestPatient.cellPhone();
         this.email = requestPatient.email();
+        this.cep = requestPatient.cep();
+        this.state = requestPatient.state();
+        this.city = requestPatient.city();
+        this.street = requestPatient.street();
     }
 
 }
