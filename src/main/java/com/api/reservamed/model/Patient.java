@@ -2,12 +2,15 @@ package com.api.reservamed.model;
 
 import com.api.reservamed.dtos.PatientRegistrationData;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.*;
 
 import java.time.LocalDate;
 
-@Entity(name = "paciente")
-@Table(name = "paciente")
+@Entity(name = "patient")
+@Table(name = "patient")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -36,4 +39,7 @@ public class Patient {
         this.email = requestPatient.email();
     }
 
+    public void setName(@NotBlank String name) {
+        this.name = name;
+    }
 }
