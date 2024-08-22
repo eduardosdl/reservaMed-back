@@ -23,7 +23,10 @@ public class Patient {
 
     private String name;
     private LocalDate birthDate;
+
+    @Column(unique = true, nullable = false)
     private String cpf;
+
     private String cellPhone;
     private String email;
     private Boolean ativo;

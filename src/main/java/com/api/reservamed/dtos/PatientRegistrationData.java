@@ -7,7 +7,7 @@ import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
 
-public record PatientRegistrationData(Long id,
+public record PatientRegistrationData(
         @NotBlank String name,
         @NotNull LocalDate birthDate,
         @NotBlank String cpf,
