@@ -56,6 +56,11 @@ public class PatientController {
         }
 
         patient.setName(data.name());
+        patient.setEmail(data.email());
+        patient.setBirthDate(data.birthDate());
+        patient.setCpf(data.cpf());
+        patient.setCellPhone(data.cellPhone());
+
 
         repository.save(patient);
         return ResponseEntity.ok(patient);

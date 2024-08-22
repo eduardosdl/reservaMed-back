@@ -13,5 +13,9 @@ public record PatientRegistrationData(
         @NotBlank String cpf,
         @NotBlank String cellPhone,
         @Email @NotBlank String email,
-        @Valid DadosEndereco address){}
+        String cep,
+        String street,
+        String state,
+        String city,
+        @Valid DadosAlergia dadosAlergia){}
 

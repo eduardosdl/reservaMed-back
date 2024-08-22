@@ -2,17 +2,13 @@ package com.api.reservamed.model;
 
 import com.api.reservamed.dtos.PatientRegistrationData;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import lombok.Getter;
-import lombok.Setter;
 import lombok.*;
 
 import java.time.LocalDate;
 
 @Entity(name = "patient")
 @Table(name = "patient")
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
@@ -29,10 +25,11 @@ public class Patient {
 
     private String cellPhone;
     private String email;
-    private Boolean ativo;
-
-    @Embedded
-    private Endereco endereco;
+    private Boolean ativo = true;
+    private String cep;
+    private String street;
+    private String state;
+    private String city;
 
     public Patient(PatientRegistrationData requestPatient){
         this.name = requestPatient.name();
@@ -40,9 +37,10 @@ public class Patient {
         this.cpf = requestPatient.cpf();
         this.cellPhone = requestPatient.cellPhone();
         this.email = requestPatient.email();
+        this.cep = requestPatient.cep();
+        this.state = requestPatient.state();
+        this.city = requestPatient.city();
+        this.street = requestPatient.street();
     }
 
-    public void setName(@NotBlank String name) {
-        this.name = name;
-    }
 }
