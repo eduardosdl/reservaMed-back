@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface DoctorsRepository extends JpaRepository<Doctors, Long> {
     Doctors findByCrm(String cpf);
-    Doctors deleteByCrm(String crm);
+   void deleteByCrm(String crm);
 
 }
 
