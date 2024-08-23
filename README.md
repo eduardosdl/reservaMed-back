@@ -1,11 +1,11 @@
+# crud patients
 
-
-# Rota
-## Post
+## Rota
+### Post
 http://localhost:8081/patients
 
 
-### Requisição
+#### Requisição
 ```
 {
 "name": "vinicius rodrigues de lima",
@@ -18,4 +18,49 @@ http://localhost:8081/patients
 "state": "PE",
 "cep": "51350570"
 }
+
 ```
+# crud Doctor
+
+## Rota
+### GET
+http://localhost:8081/doctors
+
+#### Reponse
+
+[]
+
+## Rota
+### POST
+http://localhost:8081/add-doctor
+
+#### Requisição
+
+```
+{
+ "name": "dyeggo bezerra",
+"crm": "122",
+"specialty": "cardio",
+"cellPhone": "123456789"
+}
+
+```
+## Rota
+### PUT
+http://localhost:8081/update-doctor/{CRM}
+
+#### Requisição
+
+```
+{
+ "name": "dyeggo bezerra",
+"crm": "122",
+"specialty": "cardio",
+"cellPhone": "123456789"
+}
+
+```
+## Rota
+### DELETE
+http://localhost:8081/dell-doctor/{CRM}
+
