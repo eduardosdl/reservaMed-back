@@ -20,5 +20,5 @@ public class Doctors {
     private String crm;
     private String specialty;
     private String cellPhone;
-    
+
 }
