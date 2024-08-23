@@ -1,0 +1,23 @@
+version: '3.8'
+services:
+  db:
+    image: postgres:16
+    container_name: reserva_db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: reservamed
+    ports:
+      - 5435:5432
+
+  app:
+    container_name: reserva_med_api
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./src:/usr/src/app/src
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
