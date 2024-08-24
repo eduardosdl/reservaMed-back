@@ -1,4 +1,4 @@
-package com.api.reservamed.security;
+package com.api.reservamed.infra.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -10,6 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.Period;
+
 @RestController
 @RequestMapping("/patients")
 public class PatientController {
@@ -34,13 +37,19 @@ public class PatientController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> created(@RequestBody @Valid PatientRegistrationData data) {
+    public ResponseEntity<Patient> created(@RequestBody @Valid PatientRegistrationData data) {
         if (repository.existsByCpf(data.cpf())) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build(); // 409 Conflict
         }
+
         Patient newPatient = new Patient(data);
-        repository.save(newPatient);
-        return ResponseEntity.status(HttpStatus.CREATED).build(); // 201 Created
+        Integer test = Period.between(newPatient.getBirthDate(), LocalDate.now()).getYears();
+        if (Period.between(newPatient.getBirthDate(), LocalDate.now()).getYears() > 18){
+            newPatient.setResponsibleCpf(null);
+        }
+
+        Patient savedPatient = repository.save(newPatient);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedPatient);  // 201 Created
     }
 
 
@@ -60,6 +69,11 @@ public class PatientController {
         patient.setBirthDate(data.birthDate());
         patient.setCpf(data.cpf());
         patient.setCellPhone(data.cellPhone());
+        patient.setCep(data.cep());
+        patient.setState(data.state());
+        patient.setStreet(data.street());
+        patient.setCity(data.city());
+        patient.setAllergy(data.allergy());
 
 
         repository.save(patient);
