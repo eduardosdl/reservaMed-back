@@ -23,7 +23,13 @@ public class DoctorsService {
     }
 
     public Object listDoctorCrm(String crm){
-        return doctorsRepository.findByCrm(crm);
+
+        Doctors doctor = doctorsRepository.findByCrm(crm);
+        if (doctor != null) {
+            return ResponseEntity.ok(doctor);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
 
     public Doctors saveDoctor(DoctorDto doctor){
@@ -37,7 +43,7 @@ public class DoctorsService {
         return doctorsRepository.save(newDoctor);
     }
     @Transactional
-    public ResponseEntity<Void> dellDoctor(String crm) {
+    public ResponseEntity<Object> dellDoctor(String crm) {
 
         Doctors doctors = doctorsRepository.findByCrm(crm);
 
