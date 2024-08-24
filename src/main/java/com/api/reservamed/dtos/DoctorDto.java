@@ -1,4 +1,7 @@
 package com.api.reservamed.dtos;
 
-public class DoctorDto {
+import jakarta.validation.constraints.NotNull;
+
+
+public record DoctorDto(@NotNull String name, @NotNull String crm, @NotNull String specialty, @NotNull String cellPhone) {
 }

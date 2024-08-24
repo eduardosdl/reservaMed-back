@@ -1,5 +1,6 @@
 package com.api.reservamed.service;
 
+import com.api.reservamed.dtos.DoctorDto;
 import com.api.reservamed.model.Doctors;
 import com.api.reservamed.model.Patient;
 import com.api.reservamed.repositories.DoctorsRepository;
@@ -25,18 +26,30 @@ public class DoctorsService {
         return doctorsRepository.findByCrm(crm);
     }
 
-    public Doctors saveDoctor(Doctors doctor){
-        return doctorsRepository.save(doctor);
+    public Doctors saveDoctor(DoctorDto doctor){
+        Doctors newDoctor = new Doctors();
+
+        newDoctor.setName(doctor.name());
+        newDoctor.setCrm(doctor.crm());
+        newDoctor.setSpecialty(doctor.specialty());
+        newDoctor.setCellPhone(doctor.cellPhone());
+
+        return doctorsRepository.save(newDoctor);
     }
     @Transactional
-    public void dellDoctor(String crm) {
-       doctorsRepository.deleteByCrm(crm);
+    public ResponseEntity<Void> dellDoctor(String crm) {
+
+        Doctors doctors = doctorsRepository.findByCrm(crm);
+
+        if (doctors != null) {
+            doctorsRepository.delete(doctors);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
     @Transactional
     public Optional<Doctors> updateDoctor(String crm, Doctors doctor) {
-        /*Optional<Doctors> doctorCrm = Optional.ofNullable(doctorsRepository.findByCrm(crm));
-        doctorCrm = Optional.of(doctorsRepository.save(doctor));
-        return doctorCrm;*/
 
             Doctors doctors = doctorsRepository.findByCrm(crm);
 

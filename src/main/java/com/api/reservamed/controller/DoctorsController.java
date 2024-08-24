@@ -1,5 +1,6 @@
 package com.api.reservamed.controller;
 
+import com.api.reservamed.dtos.DoctorDto;
 import com.api.reservamed.model.Doctors;
 import com.api.reservamed.service.DoctorsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +25,8 @@ public class DoctorsController {
     }
 
     @PostMapping("/add-doctor")
-    public Object addDorctor(@RequestBody Doctors doctor){
-        return doctorsService.saveDoctor(doctor);
+    public Object addDorctor(@RequestBody DoctorDto data){
+        return doctorsService.saveDoctor(data);
     }
 
     @DeleteMapping("dell-doctor/{crm}")
