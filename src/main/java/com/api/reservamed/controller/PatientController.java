@@ -2,8 +2,7 @@ package com.api.reservamed.controller;
 
 import com.api.reservamed.dtos.PatientRegistrationData;
 import com.api.reservamed.model.Patient;
-import com.api.reservamed.model.PatientRepository;
-import jakarta.transaction.Transactional;
+import com.api.reservamed.repositories.PatientRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
