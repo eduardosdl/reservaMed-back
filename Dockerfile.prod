@@ -1,0 +1,14 @@
+FROM openjdk:17-jdk-slim
+
+RUN apt-get update && apt-get install -y maven
+
+WORKDIR /usr/src/app
+
+COPY src /usr/src/app/src
+COPY pom.xml /usr/src/app
+
+RUN mvn package
+
+COPY target/reservamed-0.0.1-SNAPSHOT.jar /usr/app/reservamed-0.0.1-SNAPSHOT.jar
+
+ENTRYPOINT ["java", "-jar", "/usr/app/reservamed-0.0.1-SNAPSHOT.jar"]
