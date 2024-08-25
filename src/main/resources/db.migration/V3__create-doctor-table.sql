@@ -1,0 +1,8 @@
+CREATE TABLE doctors (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(255),
+    crm VARCHAR(13) UNIQUE NOT NULL,
+    specialty VARCHAR(255),
+    cell_phone VARCHAR(14),
+    active BOOLEAN DEFAULT TRUE
+);
