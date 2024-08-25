@@ -6,7 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
+@Entity(name = "doctors")
+@Table(name = "doctors")
 @Getter
 @Setter
 @AllArgsConstructor
@@ -20,5 +21,5 @@ public class Doctors {
     private String crm;
     private String specialty;
     private String cellPhone;
-
+    private Boolean active = true;
 }
