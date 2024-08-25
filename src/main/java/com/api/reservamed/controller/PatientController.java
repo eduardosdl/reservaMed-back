@@ -3,6 +3,7 @@ package com.api.reservamed.controller;
 import com.api.reservamed.dtos.PatientRegistrationData;
 import com.api.reservamed.model.Patient;
 import com.api.reservamed.repositories.PatientRepository;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,6 +33,7 @@ public class PatientController {
         }
     }
 
+    @Transactional
     @PostMapping
     public ResponseEntity<Void> created(@RequestBody @Valid PatientRegistrationData data) {
         if (repository.existsByCpf(data.cpf())) {
@@ -43,6 +45,7 @@ public class PatientController {
     }
 
 
+    @Transactional
     @PutMapping("/{cpf}")
     public ResponseEntity<Patient> update(@PathVariable String cpf, @RequestBody @Valid PatientRegistrationData data) {
         Patient patient = repository.findByCpf(cpf);
@@ -65,7 +68,7 @@ public class PatientController {
         return ResponseEntity.ok(patient);
     }
 
-
+    @Transactional
     @DeleteMapping("/{cpf}")
     public ResponseEntity<Void> delete(@PathVariable String cpf) {
         Patient patient = repository.findByCpf(cpf);
@@ -77,10 +80,11 @@ public class PatientController {
         }
     }
 
+    @Transactional
     @DeleteMapping("/id/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        if (repository.existsById(String.valueOf(id))) {
-            repository.deleteById(String.valueOf(id));
+        if (repository.existsById(id)) {
+            repository.deleteById(id);
             return ResponseEntity.noContent().build(); // 204 No Content
         } else {
             return ResponseEntity.notFound().build(); // 404 Not Found
