@@ -47,7 +47,7 @@ http://localhost:8081/add-doctor
 ```
 ## Rota
 ### PUT
-http://localhost:8081/update-doctor/{CRM}
+http://localhost:8080/update-doctor/{CRM}
 
 #### Requisição
 
@@ -62,6 +62,6 @@ http://localhost:8081/update-doctor/{CRM}
 ```
 ## Rota
 ### DELETE
-http://localhost:8081/dell-doctor/{CRM}
+http://localhost:8080/dell-doctor/{CRM}
 
 
