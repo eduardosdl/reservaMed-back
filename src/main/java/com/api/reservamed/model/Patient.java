@@ -25,7 +25,7 @@ public class Patient {
 
     private String cellPhone;
     private String email;
-    private Boolean ativo = true;
+    private Boolean active = true;
     private String cep;
     private String street;
     private String state;

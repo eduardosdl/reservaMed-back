@@ -4,6 +4,7 @@ import com.api.reservamed.dtos.DoctorDto;
 import com.api.reservamed.model.Doctors;
 import com.api.reservamed.service.DoctorsService;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,7 +28,7 @@ public class DoctorsController {
 
     @Transactional
     @PostMapping("/add-doctor")
-    public Object addDorctor(@RequestBody DoctorDto data){
+    public Object addDorctor(@RequestBody @Valid DoctorDto data){
         return doctorsService.saveDoctor(data);
     }
 
@@ -39,7 +40,7 @@ public class DoctorsController {
 
     @Transactional
     @PutMapping("/update-doctor/{crm}")
-    public Object updateDoctor(@PathVariable String crm,@RequestBody Doctors doctor) {
+    public Object updateDoctor(@PathVariable String crm ,@RequestBody Doctors doctor) {
         return doctorsService.updateDoctor(crm,doctor);
     }
 }
