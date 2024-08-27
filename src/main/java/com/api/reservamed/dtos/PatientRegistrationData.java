@@ -17,6 +17,6 @@ public record PatientRegistrationData(
         String street,
         String state,
         String city,
-        @Valid AllergyData dadosAlergia,
+        AllergyData allergyData,
         String medicalHistory){}
 

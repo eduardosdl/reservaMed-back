@@ -47,6 +47,7 @@ public class DoctorsService {
         newDoctor.setCrm(doctor.crm());
         newDoctor.setSpecialty(doctor.specialty());
         newDoctor.setCellPhone(doctor.cellPhone());
+        newDoctor.setActive(true);
         return ResponseEntity.ok(doctorsRepository.save(newDoctor));
     }
     @Transactional
@@ -66,7 +67,7 @@ public class DoctorsService {
 
             Doctors doctors = doctorsRepository.findByCrm(crm);
 
-            if (doctor != null) {
+            if (doctor != null && doctors != null) {
                 if (doctor.getCellPhone() != null) {
                     doctors.setCellPhone(doctor.getCellPhone());
                 }
@@ -78,6 +79,9 @@ public class DoctorsService {
                 }
                 if (doctor.getSpecialty() != null) {
                     doctors.setSpecialty(doctor.getSpecialty());
+                }
+                if(doctor.getActive() != null) {
+                    doctors.setActive(doctor.getActive());
                 }
                 return Optional.of(doctorsRepository.save(doctors));
             } else {

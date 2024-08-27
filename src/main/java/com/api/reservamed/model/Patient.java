@@ -43,8 +43,14 @@ public class Patient {
         this.state = requestPatient.state();
         this.city = requestPatient.city();
         this.street = requestPatient.street();
-        this.allergy = requestPatient.dadosAlergia().allergy();
-        this.medicalHistory = requestPatient.medicalHistory();
+        if(requestPatient.allergyData() != null){
+            this.allergy = requestPatient.allergyData().allergy();
+        }
+
+        if(requestPatient.medicalHistory() != null){
+            this.medicalHistory = requestPatient.medicalHistory();
+        }
+
     }
 
 }

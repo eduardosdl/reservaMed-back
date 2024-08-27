@@ -14,7 +14,8 @@ public interface DoctorsRepository extends JpaRepository<Doctors, Long> {
 
     @Query("""
             select active from doctors
-            where id = :id""")
+            where id = :id
+            """)
     Boolean findAtivoById(@Param("id") Long id);
 
     Doctors findByCellPhone(String cellPhone);

@@ -4,8 +4,13 @@ package com.api.reservamed.service.validations;
 import com.api.reservamed.dtos.DadosAgendamentoConsulta;
 import com.api.reservamed.infra.ValidacaoException;
 import com.api.reservamed.repositories.PatientRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ValidadorPacienteAtivo implements ValidadorAgendamentoDeConsulta{
+
+    @Autowired
     private PatientRepository pacienteRepository;
 
     public void validar(DadosAgendamentoConsulta dados){

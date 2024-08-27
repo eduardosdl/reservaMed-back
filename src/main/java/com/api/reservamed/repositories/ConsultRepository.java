@@ -13,7 +13,7 @@ import java.util.List;
 public interface ConsultRepository extends JpaRepository<Consult, Long> {
 
     @Query("""
-    select case when count(c) > 0 then true else false end
+    select case when count(c) > 0 then false else true end
     from consult c
     where c.doctor.id = :id_medico
     and c.date = :date

@@ -23,5 +23,5 @@ public class Doctors {
 
     @Column(name = "cell_phone")
     private String cellPhone;
-    private Boolean active = true;
+    private Boolean active;
 }
