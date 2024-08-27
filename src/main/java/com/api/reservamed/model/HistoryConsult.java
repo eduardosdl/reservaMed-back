@@ -7,8 +7,8 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
-@Table(name = "consult")
-@Entity(name = "consult")
+@Table(name = "history_consult")
+@Entity(name = "history_consult")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -37,10 +37,10 @@ public class HistoryConsult {
         this.prescription = dados.dadosDiagnostic().prescription();
     }
 
-    public HistoryConsult(DadosCancelamentoConsulta dados){
-        this.id_doctor = dados.consulta().id_doctor();
-        this.id_patient = dados.consulta().id_patient();
-        this.date = dados.consulta().date();
+    public HistoryConsult(DadosCancelamentoConsulta dados, Long id_doctor, Long id_patient, LocalDateTime date){
+        this.id_doctor = id_doctor;
+        this.id_patient = id_patient;
+        this.date = date;
         this.date_cancellation = LocalDateTime.now();
         this.cancellation_reason = dados.reason();
         this.status = "C";

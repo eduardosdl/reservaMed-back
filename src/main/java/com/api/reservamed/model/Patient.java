@@ -30,6 +30,8 @@ public class Patient {
     private String street;
     private String state;
     private String city;
+    private String allergy;
+    private String medicalHistory;
 
     public Patient(PatientRegistrationData requestPatient){
         this.name = requestPatient.name();
@@ -41,6 +43,8 @@ public class Patient {
         this.state = requestPatient.state();
         this.city = requestPatient.city();
         this.street = requestPatient.street();
+        this.allergy = requestPatient.dadosAlergia().allergy();
+        this.medicalHistory = requestPatient.medicalHistory();
     }
 
 }

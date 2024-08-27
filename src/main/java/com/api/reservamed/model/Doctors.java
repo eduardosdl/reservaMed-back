@@ -20,6 +20,8 @@ public class Doctors {
     @Column (unique = true, nullable = false)
     private String crm;
     private String specialty;
+
+    @Column(name = "cell_phone")
     private String cellPhone;
     private Boolean active = true;
 }

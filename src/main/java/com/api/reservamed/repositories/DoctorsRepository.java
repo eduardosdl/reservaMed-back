@@ -9,13 +9,14 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface DoctorsRepository extends JpaRepository<Doctors, Long> {
-    Doctors findByCrm(String cpf);
+    Doctors findByCrm(String crm);
     void deleteByCrm(String crm);
 
     @Query("""
-            select active from Doctors
+            select active from doctors
             where id = :id""")
     Boolean findAtivoById(@Param("id") Long id);
 
+    Doctors findByCellPhone(String cellPhone);
 }
 

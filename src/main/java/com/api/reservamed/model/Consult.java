@@ -27,7 +27,7 @@ public class Consult {
     private Patient patient;
 
     // Enum
-    private TypeConsult type_consult;
+    private String type_consult;
 
     private LocalDateTime date;
 
@@ -42,7 +42,7 @@ public class Consult {
         this.patient = patient;
         this.date = date;
         this.status = "A";
-        this.type_consult = type;
+        this.type_consult = type.getDescription();
     }
 
     public Consult(Long id, Doctors doctor, Patient patient, LocalDateTime date, TypeConsult type) {
@@ -51,6 +51,6 @@ public class Consult {
         this.patient = patient;
         this.date = date;
         this.status = "A";
-        this.type_consult = type;
+        this.type_consult = type.getDescription();
     }
 }
