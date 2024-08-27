@@ -1,0 +1,2 @@
+ALTER TABLE consult
+ALTER COLUMN type_consult TYPE TEXT;
