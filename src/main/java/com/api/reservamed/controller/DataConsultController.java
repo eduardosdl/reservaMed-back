@@ -20,6 +20,6 @@ public class DataConsultController {
 
     @GetMapping("/{id}")
     public ResponseEntity getAllByPaciente(@PathVariable java.lang.Long id){
-        return ResponseEntity.ok(repository.findAllById(id));
+        return ResponseEntity.ok(repository.findAllByIdPatient(id));
     }
 }

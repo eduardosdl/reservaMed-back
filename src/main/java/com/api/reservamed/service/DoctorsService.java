@@ -32,15 +32,22 @@ public class DoctorsService {
         }
     }
 
-    public Doctors saveDoctor(DoctorDto doctor){
+    public ResponseEntity saveDoctor(DoctorDto doctor){
         Doctors newDoctor = new Doctors();
+
+        if(doctorsRepository.findByCrm(doctor.crm()) != null){
+            return ResponseEntity.badRequest().body("CRM já existe");
+        }
+
+        if(doctorsRepository.findByCellPhone(doctor.cellPhone()) != null){
+            return ResponseEntity.badRequest().body("Telefone já registrado");
+        }
 
         newDoctor.setName(doctor.name());
         newDoctor.setCrm(doctor.crm());
         newDoctor.setSpecialty(doctor.specialty());
         newDoctor.setCellPhone(doctor.cellPhone());
-
-        return doctorsRepository.save(newDoctor);
+        return ResponseEntity.ok(doctorsRepository.save(newDoctor));
     }
     @Transactional
     public ResponseEntity<Object> dellDoctor(String crm) {

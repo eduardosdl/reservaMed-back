@@ -48,7 +48,6 @@ public class AgendaDeConsultas {
         var medico = medicoRepository.getReferenceById(dados.id_doctor());
         var paciente = pacienteRepository.getReferenceById(dados.id_patient());
         var consulta = new Consult(medico, paciente, dados.date(), dados.type());
-        consulta.setStatus("A");
         return consultaRepository.save(consulta);
     }
 }

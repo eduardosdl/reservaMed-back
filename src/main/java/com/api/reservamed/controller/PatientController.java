@@ -35,13 +35,13 @@ public class PatientController {
 
     @Transactional
     @PostMapping
-    public ResponseEntity<Void> created(@RequestBody @Valid PatientRegistrationData data) {
+    public ResponseEntity created(@RequestBody @Valid PatientRegistrationData data) {
         if (repository.existsByCpf(data.cpf())) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).build(); // 409 Conflict
+            return ResponseEntity.badRequest().body("CPF já existe no banco de dados");
         }
         Patient newPatient = new Patient(data);
-        repository.save(newPatient);
-        return ResponseEntity.status(HttpStatus.CREATED).build(); // 201 Created
+        var patient = repository.save(newPatient);
+        return ResponseEntity.status(HttpStatus.CREATED).body(patient); // 201 Created
     }
 
 

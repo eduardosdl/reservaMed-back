@@ -6,6 +6,7 @@ import com.api.reservamed.service.DoctorsService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,7 +29,7 @@ public class DoctorsController {
 
     @Transactional
     @PostMapping("/add-doctor")
-    public Object addDorctor(@RequestBody @Valid DoctorDto data){
+    public ResponseEntity addDorctor(@RequestBody @Valid DoctorDto data){
         return doctorsService.saveDoctor(data);
     }
 

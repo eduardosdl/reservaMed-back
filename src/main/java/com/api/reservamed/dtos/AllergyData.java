@@ -1,4 +1,4 @@
 package com.api.reservamed.dtos;
 
-public record allergyData() {
+public record AllergyData(String allergy, String severity) {
 }

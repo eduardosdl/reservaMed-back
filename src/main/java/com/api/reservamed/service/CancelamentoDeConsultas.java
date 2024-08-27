@@ -29,17 +29,17 @@ public class CancelamentoDeConsultas {
 
 
     public void cancelarConsulta(DadosCancelamentoConsulta dados){
-        var consulta = dados.consulta();
+        var consulta = consultaRepository.getReferenceById(dados.id());
 
-        if (!consultaRepository.existsById(consulta.id())) {
+        if (!consultaRepository.existsById(consulta.getId())) {
             throw new ValidacaoException("Id da consulta informada não existe");
         }
 
-        if (!pacienteRepository.existsById(consulta.id_patient())) {
+        if (!pacienteRepository.existsById(consulta.getPatient().getId())) {
             throw new ValidacaoException("Id do paciente informado não existe");
         }
 
-        if (!medicoRepository.existsById(consulta.id_doctor())) {
+        if (!medicoRepository.existsById(consulta.getDoctor().getId())) {
             throw new ValidacaoException("Id do medico informado não existe");
         }
 
@@ -52,7 +52,7 @@ public class CancelamentoDeConsultas {
 
     private void salvarCancelamento(DadosCancelamentoConsulta dados){
         try{
-            var consulta = consultaRepository.getReferenceById(dados.consulta().id());
+            var consulta = consultaRepository.getReferenceById(dados.id());
             if(consulta.getStatus().equals("C")){
                 throw new ValidacaoException("A consulta já foi cancelada");
             }
@@ -75,7 +75,7 @@ public class CancelamentoDeConsultas {
             consulta.setDate_cancellation(LocalDateTime.now());
             consulta.setCancellation_reason(dados.reason());
 
-            var historyConsult = new HistoryConsult(dados);
+            var historyConsult = new HistoryConsult(dados, consulta.getDoctor().getId(), consulta.getPatient().getId(), consulta.getDate());
             historyConsutRepository.save(historyConsult);
         }catch (Exception e){
             throw new ValidacaoException("Aconteceu um erro ao excluir consulta: " + e.getMessage());
