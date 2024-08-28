@@ -32,21 +32,18 @@ public class ConsultController {
     private ConfirmarConsulta confirmarConsulta;
 
     @PostMapping
-    @Transactional
     public ResponseEntity agendar(@RequestBody @Valid DadosAgendamentoConsulta dados){
         var dto = agenda.agendar(dados);
         return ResponseEntity.ok(dto);
     }
 
     @DeleteMapping("/cancelamento")
-    @Transactional
     public ResponseEntity cancelar(@RequestBody @Valid DadosCancelamentoConsulta dados){
         cancelar.cancelarConsulta(dados);
         return ResponseEntity.ok().build();
     }
 
     @PutMapping("/{id}")
-    @Transactional
     public ResponseEntity confirmarConsulta(@PathVariable Long id, @RequestBody DadosDiagnostic dadosDiagnostic){
         var historu = confirmarConsulta.confirmar(id, dadosDiagnostic);
         return ResponseEntity.ok(historu);
