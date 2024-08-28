@@ -12,35 +12,36 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("/doctors")
 public class DoctorsController {
 
     @Autowired
     DoctorsService doctorsService;
 
-    @GetMapping("/doctors")
+    @GetMapping
     public List doctors(){
         return doctorsService.listAll();
     }
 
-    @GetMapping("/doctor/{crm}")
+    @GetMapping("/{crm}")
     public Object doctor(@PathVariable String crm){
         return doctorsService.listDoctorCrm(crm);
     }
 
     @Transactional
-    @PostMapping("/add-doctor")
-    public ResponseEntity addDorctor(@RequestBody @Valid DoctorDto data){
+    @PostMapping
+    public ResponseEntity addDoctor(@RequestBody @Valid DoctorDto data){
         return doctorsService.saveDoctor(data);
     }
 
     @Transactional
-    @DeleteMapping("dell-doctor/{crm}")
+    @DeleteMapping("/{crm}")
     public void deleteDoctor(@PathVariable String crm) {
         doctorsService.dellDoctor(crm);
     }
 
     @Transactional
-    @PutMapping("/update-doctor/{crm}")
+    @PutMapping("/{crm}")
     public Object updateDoctor(@PathVariable String crm ,@RequestBody Doctors doctor) {
         return doctorsService.updateDoctor(crm,doctor);
     }
