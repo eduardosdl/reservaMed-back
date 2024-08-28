@@ -11,6 +11,8 @@ import org.springframework.stereotype.Repository;
 public interface PatientRepository extends JpaRepository<Patient, Long> {
     Patient findByCpf(String cpf);
     boolean existsByCpf(String cpf);
+    @Query("select active from patient where cpf = :cpf")
+    boolean findActiveByCpf(String cpf);
 
     @Query("""
             select active from

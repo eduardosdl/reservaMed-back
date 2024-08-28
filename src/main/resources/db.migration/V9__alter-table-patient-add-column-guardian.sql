@@ -1,0 +1,1 @@
+alter table patient add guardianCpf CHAR(14);
