@@ -21,4 +21,5 @@ public interface ConsultRepository extends JpaRepository<Consult, Long> {
     boolean consultaDisponibilidadeMedicoNoHorario(@Param("id_medico") Long id_medico, @Param("date") LocalDateTime date);
 
     List<Consult> findAllById(Long id);
+    List<Consult> findByPatientCpf(String cpf);
 }

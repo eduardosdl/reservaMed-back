@@ -41,14 +41,14 @@ public class ValidadorMedicoLivreNoHorario implements ValidadorAgendamentoDeCons
             var queuePosition = queueRepository.posicaoFila(dados.id_doctor(), dados.date());
             queuePosition += 1;
             var doctor = doctorsRepository.findById(dados.id_doctor());
-            var patient = patientRepository.findById(dados.id_patient());
+            var patient = patientRepository.findByCpf(dados.cpf_patient());
             if (doctor.isEmpty()) {
                 throw new ValidacaoException("Doctor don´t found. ");
             }
-            if (patient.isEmpty()) {
+            if (patient== null) {
                 throw new ValidacaoException("Patient don´t found. ");
             }
-            var queue = new Queue(doctor.get(), patient.get(), dados.date(), dados.type());
+            var queue = new Queue(doctor.get(), patient, dados.date(), dados.type());
             queue.setQueue_position(queuePosition);
 
             queueService.insertQueue(queue);

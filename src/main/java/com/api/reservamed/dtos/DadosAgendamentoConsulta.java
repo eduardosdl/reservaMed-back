@@ -6,9 +6,11 @@ import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
 
-public record DadosAgendamentoConsulta(Long id_doctor,
-                                       @NotNull Long id_patient,
-                                       @NotNull @Future LocalDateTime date,
-                                       String speciality,
-                                       TypeConsult type) {
+public record DadosAgendamentoConsulta(
+        Long id_doctor,
+        @NotNull String cpf_patient,
+        @NotNull @Future LocalDateTime date,
+        String speciality,
+        TypeConsult type
+) {
 }

@@ -32,6 +32,7 @@ public class Patient {
     private String city;
     private String allergy;
     private String medicalHistory;
+    private String guardianCpf;
 
     public Patient(PatientRegistrationData requestPatient) {
         this.name = requestPatient.name();
@@ -44,9 +45,9 @@ public class Patient {
         this.city = requestPatient.city();
         this.street = requestPatient.street();
         this.allergy = requestPatient.allergy();
-
-        if (requestPatient.medicalHistory() != null) {
-            this.medicalHistory = requestPatient.medicalHistory();
+        this.medicalHistory = requestPatient.medicalHistory();
+        if (requestPatient.birthDate().isAfter(LocalDate.now().minusYears(18))) {
+            this.guardianCpf = requestPatient.guardianCpf();
         }
     }
 }

@@ -29,8 +29,8 @@ public class AgendaDeConsultas {
 
     public DadosDetalhamentoConsulta agendar(DadosAgendamentoConsulta dados){
 
-        if (!pacienteRepository.existsById(dados.id_patient())) {
-            throw new ValidacaoException("Id do paciente informado não existe");
+        if (!pacienteRepository.existsByCpf(dados.cpf_patient())) {
+            throw new ValidacaoException("CPF do paciente informado não existe");
         }
 
         if (dados.id_doctor()!= null && !medicoRepository.existsById(dados.id_doctor())) {
@@ -41,12 +41,12 @@ public class AgendaDeConsultas {
 
         // Irá entrar aqui se todas as validações passarem
         var consultaRetorno = salvarConsulta(dados);
-        return new DadosDetalhamentoConsulta(consultaRetorno.getId(), dados.id_doctor(), dados.id_patient(), dados.date());
+        return new DadosDetalhamentoConsulta(consultaRetorno.getId(), dados.id_doctor(), dados.cpf_patient(), dados.date());
     }
 
     private Consult salvarConsulta(DadosAgendamentoConsulta dados) {
         var medico = medicoRepository.getReferenceById(dados.id_doctor());
-        var paciente = pacienteRepository.getReferenceById(dados.id_patient());
+        var paciente = pacienteRepository.findByCpf(dados.cpf_patient());
         var consulta = new Consult(medico, paciente, dados.date(), dados.type());
         return consultaRepository.save(consulta);
     }

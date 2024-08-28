@@ -1,6 +1,7 @@
 package com.api.reservamed.controller;
 
 import com.api.reservamed.dtos.PatientRegistrationData;
+import com.api.reservamed.infra.exception.ErrorResponse;
 import com.api.reservamed.model.Patient;
 import com.api.reservamed.repositories.PatientRepository;
 import jakarta.transaction.Transactional;
@@ -9,6 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
+import java.time.Period;
 
 @RestController
 @RequestMapping("/patients")
@@ -35,10 +39,13 @@ public class PatientController {
 
     @Transactional
     @PostMapping
-    public ResponseEntity created(@RequestBody @Valid PatientRegistrationData data) {
+    public ResponseEntity<Object> created(@RequestBody @Valid PatientRegistrationData data) {
         if (repository.existsByCpf(data.cpf())) {
-            return ResponseEntity.badRequest().body("CPF já existe no banco de dados");
+            return ResponseEntity.badRequest().body(new ErrorResponse("CPF já existe no banco de dados"));
         }
+
+        int age = Period.between(data.birthDate(), LocalDate.now()).getYears();
+
         Patient newPatient = new Patient(data);
         var patient = repository.save(newPatient);
         return ResponseEntity.status(HttpStatus.CREATED).body(patient); // 201 Created
@@ -47,14 +54,14 @@ public class PatientController {
 
     @Transactional
     @PutMapping("/{cpf}")
-    public ResponseEntity<Patient> update(@PathVariable String cpf, @RequestBody @Valid PatientRegistrationData data) {
+    public ResponseEntity<Object> update(@PathVariable String cpf, @RequestBody @Valid PatientRegistrationData data) {
         Patient patient = repository.findByCpf(cpf);
         if (patient == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
 
         if (!data.cpf().equals(cpf) && repository.existsByCpf(data.cpf())) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).build(); // 409 Conflict
+            return ResponseEntity.badRequest().body(new ErrorResponse("CPF já existe no banco de dados"));
         }
 
         patient.setName(data.name());
@@ -62,7 +69,12 @@ public class PatientController {
         patient.setBirthDate(data.birthDate());
         patient.setCpf(data.cpf());
         patient.setCellPhone(data.cellPhone());
-
+        patient.setCep(data.cep());
+        patient.setStreet(data.street());
+        patient.setState(data.state());
+        patient.setCity(data.city());
+        patient.setMedicalHistory(data.medicalHistory());
+        patient.setGuardianCpf(data.guardianCpf());
 
         repository.save(patient);
         return ResponseEntity.ok(patient);

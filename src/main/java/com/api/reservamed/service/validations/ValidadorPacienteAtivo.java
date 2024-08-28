@@ -14,7 +14,7 @@ public class ValidadorPacienteAtivo implements ValidadorAgendamentoDeConsulta{
     private PatientRepository pacienteRepository;
 
     public void validar(DadosAgendamentoConsulta dados){
-        var pacienteEstaAtivo = pacienteRepository.findAtivoById(dados.id_patient());
+        var pacienteEstaAtivo = pacienteRepository.findActiveByCpf(dados.cpf_patient());
         if(!pacienteEstaAtivo){
             throw new ValidacaoException("Consulta não pode ser agendada com paciente excluído");
         }

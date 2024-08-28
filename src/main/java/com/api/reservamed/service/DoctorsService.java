@@ -1,6 +1,7 @@
 package com.api.reservamed.service;
 
 import com.api.reservamed.dtos.DoctorDto;
+import com.api.reservamed.infra.exception.ErrorResponse;
 import com.api.reservamed.model.Doctors;
 import com.api.reservamed.model.Patient;
 import com.api.reservamed.repositories.DoctorsRepository;
@@ -36,11 +37,11 @@ public class DoctorsService {
         Doctors newDoctor = new Doctors();
 
         if(doctorsRepository.findByCrm(doctor.crm()) != null){
-            return ResponseEntity.badRequest().body("CRM já existe");
+            return ResponseEntity.badRequest().body(new ErrorResponse("CRM já existe"));
         }
 
         if(doctorsRepository.findByCellPhone(doctor.cellPhone()) != null){
-            return ResponseEntity.badRequest().body("Telefone já registrado");
+            return ResponseEntity.badRequest().body(new ErrorResponse("Telefone ja registrado"));
         }
 
         newDoctor.setName(doctor.name());
