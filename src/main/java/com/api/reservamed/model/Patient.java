@@ -33,7 +33,7 @@ public class Patient {
     private String allergy;
     private String medicalHistory;
 
-    public Patient(PatientRegistrationData requestPatient){
+    public Patient(PatientRegistrationData requestPatient) {
         this.name = requestPatient.name();
         this.birthDate = requestPatient.birthDate();
         this.cpf = requestPatient.cpf();
@@ -43,14 +43,10 @@ public class Patient {
         this.state = requestPatient.state();
         this.city = requestPatient.city();
         this.street = requestPatient.street();
-        if(requestPatient.allergyData() != null){
-            this.allergy = requestPatient.allergyData().allergy();
-        }
+        this.allergy = requestPatient.allergy();
 
-        if(requestPatient.medicalHistory() != null){
+        if (requestPatient.medicalHistory() != null) {
             this.medicalHistory = requestPatient.medicalHistory();
         }
-
     }
-
 }
