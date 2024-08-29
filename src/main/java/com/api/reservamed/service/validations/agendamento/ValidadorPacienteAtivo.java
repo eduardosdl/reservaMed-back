@@ -1,4 +1,4 @@
-package com.api.reservamed.service.validations;
+package com.api.reservamed.service.validations.agendamento;
 
 
 import com.api.reservamed.dtos.DadosAgendamentoConsulta;

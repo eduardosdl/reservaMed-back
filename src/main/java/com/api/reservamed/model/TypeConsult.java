@@ -4,14 +4,8 @@ public enum TypeConsult {
     // Enum constants
     ROUTINE_CHECKUP("Consulta de Rotina/Check-up"),
     URGENT_CARE("Consulta de Urgência/Emergência"),
-    FOLLOW_UP("Consulta de Seguimento"),
     SPECIALIZED("Consulta Especializada"),
-    PRENATAL("Consulta Pré-Natal"),
-    PEDIATRIC("Consulta Pediátrica"),
-    PSYCHIATRIC("Consulta Psiquiátrica/Psicológica"),
-    DENTAL("Consulta Odontológica"),
-    GERIATRIC("Consulta Geriátrica"),
-    TELEMEDICINE("Consulta de Telemedicina");
+    PEDIATRIC("Consulta Pediátrica");
 
     // Field to hold description
     private final String description;

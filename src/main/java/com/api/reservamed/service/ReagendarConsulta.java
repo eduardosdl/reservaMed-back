@@ -1,20 +1,20 @@
 package com.api.reservamed.service;
 
-import com.api.reservamed.dtos.DadosAgendamentoConsulta;
 import com.api.reservamed.dtos.DadosDetalhamentoConsulta;
+import com.api.reservamed.dtos.DadosReagendamentoConsulta;
 import com.api.reservamed.infra.ValidacaoException;
 import com.api.reservamed.model.Consult;
 import com.api.reservamed.repositories.ConsultRepository;
 import com.api.reservamed.repositories.DoctorsRepository;
 import com.api.reservamed.repositories.PatientRepository;
-import com.api.reservamed.service.validations.agendamento.ValidadorAgendamentoDeConsulta;
+import com.api.reservamed.service.validations.reagendamento.ValidadorReagendamentoDeConsulta;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class AgendaDeConsultas {
+public class ReagendarConsulta {
     @Autowired
     private ConsultRepository consultaRepository;
 
@@ -25,9 +25,9 @@ public class AgendaDeConsultas {
     private PatientRepository pacienteRepository;
 
     @Autowired
-    private List<ValidadorAgendamentoDeConsulta> validacoes;
+    private List<ValidadorReagendamentoDeConsulta> validacoes;
 
-    public DadosDetalhamentoConsulta agendar(DadosAgendamentoConsulta dados){
+    public DadosDetalhamentoConsulta reagendar(DadosReagendamentoConsulta dados){
 
         if (!pacienteRepository.existsByCpf(dados.cpf_patient())) {
             throw new ValidacaoException("CPF do paciente informado não existe");
@@ -44,11 +44,13 @@ public class AgendaDeConsultas {
         return new DadosDetalhamentoConsulta(consultaRetorno.getId(), dados.id_doctor(), dados.cpf_patient(), dados.date());
     }
 
-    private Consult salvarConsulta(DadosAgendamentoConsulta dados) {
+    private Consult salvarConsulta(DadosReagendamentoConsulta dados) {
         var medico = medicoRepository.getReferenceById(dados.id_doctor());
         var paciente = pacienteRepository.findByCpf(dados.cpf_patient());
         var consulta = new Consult(medico, paciente, dados.date(), dados.type());
+        consulta.setId(dados.id());
         return consultaRepository.save(consulta);
     }
 }
+
 

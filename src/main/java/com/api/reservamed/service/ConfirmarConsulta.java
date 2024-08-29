@@ -7,7 +7,9 @@ import com.api.reservamed.infra.ValidacaoException;
 import com.api.reservamed.model.Consult;
 import com.api.reservamed.model.HistoryConsult;
 import com.api.reservamed.repositories.ConsultRepository;
+import com.api.reservamed.repositories.DoctorsRepository;
 import com.api.reservamed.repositories.HistoryConsutRepository;
+import com.api.reservamed.repositories.PatientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,16 +22,12 @@ public class ConfirmarConsulta {
     @Autowired
     private HistoryConsutRepository historyConsutRepository;
 
-    public DadosConfirmaConsulta confirmar(Long id, DadosDiagnostic dadosDiagnostic){
-        var consulta = repository.getReferenceById(id);
-        var dadosConfirmaConsulta = new DadosConfirmaConsulta(consulta, dadosDiagnostic);
-        if(consulta.getId() != null){
-            if(consulta.getStatus().equals("C")){
-                throw new ValidacaoException("A consulta já foi cancelada, não é possível alterar para processada");
-            }
-            finalizarConsulta(consulta);
-            inserirHistoricoConsulta(dadosConfirmaConsulta);
+    public DadosConfirmaConsulta confirmar(DadosConfirmaConsulta dadosConfirmaConsulta){
+        if(dadosConfirmaConsulta.status().equals("C")){
+            throw new ValidacaoException("A consulta já foi cancelada, não é possível alterar para processada");
         }
+        finalizarConsulta(dadosConfirmaConsulta);
+        inserirHistoricoConsulta(dadosConfirmaConsulta);
         return dadosConfirmaConsulta;
     }
 
@@ -38,7 +36,8 @@ public class ConfirmarConsulta {
         historyConsutRepository.save(history);
     }
 
-    public void finalizarConsulta(Consult consult){
+    public void finalizarConsulta(DadosConfirmaConsulta dados){
+        var consult = repository.getReferenceById(dados.id());
         consult.setStatus("P");
         repository.save(consult);
     }

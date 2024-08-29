@@ -27,12 +27,10 @@ public class HistoryConsult {
     private String prescription;
 
     public HistoryConsult(DadosConfirmaConsulta dados){
-        this.id_doctor = dados.consult().getDoctor().getId();
-        this.id_patient = dados.consult().getPatient().getId();
-        this.date = dados.consult().getDate();
-        this.date_cancellation = dados.consult().getDate_cancellation();
-        this.cancellation_reason = dados.consult().getCancellation_reason();
-        this.status = dados.consult().getStatus();
+        this.id_doctor = dados.id_doctor();
+        this.id_patient = dados.id_patient();
+        this.date = dados.date();
+        this.status = dados.status();
         this.diagnostic = dados.dadosDiagnostic().diagnostic();
         this.prescription = dados.dadosDiagnostic().prescription();
     }
