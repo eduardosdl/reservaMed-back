@@ -2,10 +2,7 @@ package com.api.reservamed.controller;
 
 import com.api.reservamed.dtos.*;
 import com.api.reservamed.repositories.ConsultRepository;
-import com.api.reservamed.service.AgendaDeConsultas;
-import com.api.reservamed.service.CancelamentoDeConsultas;
-import com.api.reservamed.service.ConfirmarConsulta;
-import com.api.reservamed.service.ReagendarConsulta;
+import com.api.reservamed.service.*;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +26,9 @@ public class ConsultController {
 
     @Autowired
     private ReagendarConsulta reagendarConsulta;
+
+    @Autowired
+    private ConsultService consultService;
 
     @PostMapping
     public ResponseEntity agendar(@RequestBody @Valid DadosAgendamentoConsulta dados){
@@ -72,5 +72,11 @@ public class ConsultController {
     @GetMapping
     public ResponseEntity getAll(){
         return ResponseEntity.ok(consultaRepository.findAll());
+    }
+
+    @GetMapping("/{cpf}")
+    public ResponseEntity getByCpf(@PathVariable String cpf) {
+        var consults = consultService.getConsultsByPatientCpf(cpf);
+        return ResponseEntity.ok(consults);
     }
 }
