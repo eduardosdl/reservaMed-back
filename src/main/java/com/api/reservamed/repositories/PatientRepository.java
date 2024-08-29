@@ -20,3 +20,7 @@ public interface PatientRepository extends JpaRepository<Patient, Long> {
             """)
     boolean findAtivoById(@Param("id") Long id);
 }
+
+
+
+
