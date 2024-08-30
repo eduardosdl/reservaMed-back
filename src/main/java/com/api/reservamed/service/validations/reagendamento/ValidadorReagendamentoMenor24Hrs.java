@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
-@Component
+//@Component
 public class ValidadorReagendamentoMenor24Hrs implements ValidadorReagendamentoDeConsulta {
 
     @Autowired

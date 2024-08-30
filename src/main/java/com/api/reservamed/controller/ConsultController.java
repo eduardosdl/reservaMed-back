@@ -38,8 +38,7 @@ public class ConsultController {
 
     @DeleteMapping("/cancelamento")
     public ResponseEntity cancelar(@RequestBody @Valid DadosCancelamentoConsulta dados){
-        cancelar.cancelarConsulta(dados);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(cancelar.cancelarConsulta(dados));
     }
 
     @PutMapping("/{id}")
@@ -64,6 +63,9 @@ public class ConsultController {
     @PutMapping("/reschedule/update")
     public ResponseEntity reschedule(@Valid @RequestBody DadosReagendamentoConsulta dados){
         if(consultaRepository.findById(dados.id()).isPresent()){
+            if(reagendarConsulta.reagendar(dados)==null){
+                return ResponseEntity.ok("A consulta deve ser cancelada com pelo menos 24 horas de antecedência, será cobrado uma taxa de cancelamento!");
+            }
             return ResponseEntity.ok(reagendarConsulta.reagendar(dados));
         }
         return ResponseEntity.notFound().build();
@@ -71,6 +73,6 @@ public class ConsultController {
 
     @GetMapping
     public ResponseEntity getAll(){
-        return ResponseEntity.ok(consultaRepository.findAll());
+        return ResponseEntity.ok(consultaRepository.findAllActive());
     }
 }

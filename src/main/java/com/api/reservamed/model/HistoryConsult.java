@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 public class HistoryConsult {
     @Id
     private Long id_patient;
+    private Long id_consult;
     private Long id_doctor;
     // Enum
     private TypeConsult type_consult;
@@ -27,6 +28,7 @@ public class HistoryConsult {
     private String prescription;
 
     public HistoryConsult(DadosConfirmaConsulta dados){
+        this.id_consult = dados.id();
         this.id_doctor = dados.id_doctor();
         this.id_patient = dados.id_patient();
         this.date = dados.date();
@@ -36,6 +38,7 @@ public class HistoryConsult {
     }
 
     public HistoryConsult(DadosCancelamentoConsulta dados, Long id_doctor, Long id_patient, LocalDateTime date){
+        this.id_consult = dados.id();
         this.id_doctor = id_doctor;
         this.id_patient = id_patient;
         this.date = date;

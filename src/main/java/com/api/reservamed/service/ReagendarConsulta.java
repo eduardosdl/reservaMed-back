@@ -11,6 +11,7 @@ import com.api.reservamed.service.validations.reagendamento.ValidadorReagendamen
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -35,6 +36,18 @@ public class ReagendarConsulta {
 
         if (dados.id_doctor()!= null && !medicoRepository.existsById(dados.id_doctor())) {
             throw new ValidacaoException("Id do medico informado não existe");
+        }
+
+        var consulta = consultaRepository.getReferenceById(dados.id());
+        if(consulta.getStatus().equals("C")){
+            throw new ValidacaoException("A consulta já foi cancelada");
+        }
+        // Calcula a diferença de horas entre a data atual e a data da consulta
+        long hoursDifference = java.time.Duration.between(LocalDateTime.now(), consulta.getDate()).toHours();
+
+        // Se a diferença for menor que 24 horas, lança uma exceção
+        if (hoursDifference < 24) {
+            return null;
         }
 
         validacoes.forEach(v -> v.validar(dados));

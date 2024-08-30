@@ -24,4 +24,22 @@ public class DataConsultController {
     public ResponseEntity getAllByPaciente(@PathVariable java.lang.Long id){
         return ResponseEntity.ok(repository.findAllByIdPatient(id));
     }
+
+    @GetMapping("/prescription/{id}")
+    public ResponseEntity closed(@PathVariable Long id){
+        try{
+            var prescription = repository.findPrescriptionById(id);
+            var history_consult = repository.findByIdConsult(id);
+            if(history_consult.isPresent() && history_consult.get().getStatus().equals("P")){
+                if(prescription.isPresent()){
+                    return ResponseEntity.ok(prescription);
+                }
+                return ResponseEntity.ok("Prescription not found in this consult or the consult not processed!");
+            }
+            return ResponseEntity.notFound().build();
+
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body("Error: " + e.getMessage());
+        }
+    }
 }

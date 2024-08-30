@@ -1,0 +1,1 @@
+alter table history_consult add id_consult BIGINT;

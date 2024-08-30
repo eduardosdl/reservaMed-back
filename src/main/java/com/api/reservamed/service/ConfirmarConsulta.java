@@ -33,6 +33,7 @@ public class ConfirmarConsulta {
 
     public void inserirHistoricoConsulta(DadosConfirmaConsulta dados){
         var history = new HistoryConsult(dados);
+        history.setStatus("P");
         historyConsutRepository.save(history);
     }
 

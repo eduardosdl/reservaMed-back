@@ -28,7 +28,7 @@ public class CancelamentoDeConsultas {
 
 
 
-    public void cancelarConsulta(DadosCancelamentoConsulta dados){
+    public String cancelarConsulta(DadosCancelamentoConsulta dados){
         var consulta = consultaRepository.getReferenceById(dados.id());
 
         if (!consultaRepository.existsById(consulta.getId())) {
@@ -47,11 +47,12 @@ public class CancelamentoDeConsultas {
             throw new ValidacaoException("O motivo não pode ser nulo");
         }
 
-        salvarCancelamento(dados);
+        return salvarCancelamento(dados);
     }
 
-    private void salvarCancelamento(DadosCancelamentoConsulta dados){
+    private String salvarCancelamento(DadosCancelamentoConsulta dados){
         try{
+            String retorno = null;
             var consulta = consultaRepository.getReferenceById(dados.id());
             if(consulta.getStatus().equals("C")){
                 throw new ValidacaoException("A consulta já foi cancelada");
@@ -64,19 +65,20 @@ public class CancelamentoDeConsultas {
 
                 // Se a diferença for menor que 24 horas, lança uma exceção
                 if (hoursDifference < 24) {
-                    throw new ValidacaoException("A consulta deve ser cancelada com pelo menos 24 horas de antecedência" +
-                            ", caso o cancelamento seja feito será cobrado uma taxa de cancelamento!");
+                    retorno = "A consulta deve ser cancelada com pelo menos 24 horas de antecedência" +
+                            ", caso o cancelamento seja feito será cobrado uma taxa de cancelamento!";
                 }
             }else{
                 throw new ValidacaoException("A consulta não pode ser cancelada pois já passou do horário agendado");
             }
 
-            consulta.setStatus("A");
+            consulta.setStatus("C");
             consulta.setDate_cancellation(LocalDateTime.now());
             consulta.setCancellation_reason(dados.reason());
 
             var historyConsult = new HistoryConsult(dados, consulta.getDoctor().getId(), consulta.getPatient().getId(), consulta.getDate());
             historyConsutRepository.save(historyConsult);
+            return retorno;
         }catch (Exception e){
             throw new ValidacaoException("Aconteceu um erro ao excluir consulta: " + e.getMessage());
         }
