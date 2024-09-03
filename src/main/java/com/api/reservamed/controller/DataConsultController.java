@@ -15,9 +15,12 @@ public class DataConsultController {
     @Autowired
     private HistoryConsutRepository repository;
 
+    @Autowired
+    private ConsultRepository consultRepository;
+
     @GetMapping
     public ResponseEntity getAll(){
-        return ResponseEntity.ok(repository.findAll());
+        return ResponseEntity.ok(consultRepository.findByStatusNot("A"));
     }
 
     @GetMapping("/{id}")

@@ -42,13 +42,6 @@ public class ReagendarConsulta {
         if(consulta.getStatus().equals("C")){
             throw new ValidacaoException("A consulta já foi cancelada");
         }
-        // Calcula a diferença de horas entre a data atual e a data da consulta
-        long hoursDifference = java.time.Duration.between(LocalDateTime.now(), consulta.getDate()).toHours();
-
-        // Se a diferença for menor que 24 horas, lança uma exceção
-        if (hoursDifference < 24) {
-            return null;
-        }
 
         validacoes.forEach(v -> v.validar(dados));
 

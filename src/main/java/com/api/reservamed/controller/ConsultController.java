@@ -36,7 +36,7 @@ public class ConsultController {
         return ResponseEntity.ok(dto);
     }
 
-    @DeleteMapping("/cancelamento")
+    @DeleteMapping
     public ResponseEntity cancelar(@RequestBody @Valid DadosCancelamentoConsulta dados){
         return ResponseEntity.ok(cancelar.cancelarConsulta(dados));
     }
@@ -63,9 +63,6 @@ public class ConsultController {
     @PutMapping("/reschedule/update")
     public ResponseEntity reschedule(@Valid @RequestBody DadosReagendamentoConsulta dados){
         if(consultaRepository.findById(dados.id()).isPresent()){
-            if(reagendarConsulta.reagendar(dados)==null){
-                return ResponseEntity.ok("A consulta deve ser cancelada com pelo menos 24 horas de antecedência, será cobrado uma taxa de cancelamento!");
-            }
             return ResponseEntity.ok(reagendarConsulta.reagendar(dados));
         }
         return ResponseEntity.notFound().build();

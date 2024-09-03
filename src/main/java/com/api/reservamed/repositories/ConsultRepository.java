@@ -24,6 +24,7 @@ public interface ConsultRepository extends JpaRepository<Consult, Long> {
 
     List<Consult> findAllById(Long id);
     List<Consult> findByPatientCpf(String cpf);
+    List<Consult> findByStatusNot(String status);
 
     @Query("""
             select c from consult c
