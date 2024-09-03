@@ -3,7 +3,6 @@ package com.api.reservamed.service;
 import com.api.reservamed.dtos.DoctorDto;
 import com.api.reservamed.infra.exception.ErrorResponse;
 import com.api.reservamed.model.Doctors;
-import com.api.reservamed.model.Patient;
 import com.api.reservamed.repositories.DoctorsRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;

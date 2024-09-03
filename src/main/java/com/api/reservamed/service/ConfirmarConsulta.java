@@ -1,15 +1,10 @@
 package com.api.reservamed.service;
 
 import com.api.reservamed.dtos.DadosConfirmaConsulta;
-import com.api.reservamed.dtos.DadosDetalhamentoConsulta;
-import com.api.reservamed.dtos.DadosDiagnostic;
 import com.api.reservamed.infra.ValidacaoException;
-import com.api.reservamed.model.Consult;
 import com.api.reservamed.model.HistoryConsult;
 import com.api.reservamed.repositories.ConsultRepository;
-import com.api.reservamed.repositories.DoctorsRepository;
 import com.api.reservamed.repositories.HistoryConsutRepository;
-import com.api.reservamed.repositories.PatientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

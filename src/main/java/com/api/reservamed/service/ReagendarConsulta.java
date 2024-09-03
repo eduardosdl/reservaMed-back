@@ -9,6 +9,7 @@ import com.api.reservamed.repositories.DoctorsRepository;
 import com.api.reservamed.repositories.PatientRepository;
 import com.api.reservamed.service.validations.reagendamento.ValidadorReagendamentoDeConsulta;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -28,7 +29,7 @@ public class ReagendarConsulta {
     @Autowired
     private List<ValidadorReagendamentoDeConsulta> validacoes;
 
-    public DadosDetalhamentoConsulta reagendar(DadosReagendamentoConsulta dados){
+    public ResponseEntity reagendar(DadosReagendamentoConsulta dados){
 
         if (!pacienteRepository.existsByCpf(dados.cpf_patient())) {
             throw new ValidacaoException("CPF do paciente informado não existe");
@@ -47,14 +48,15 @@ public class ReagendarConsulta {
 
         // Se a diferença for menor que 24 horas, lança uma exceção
         if (hoursDifference < 24) {
-            return null;
+            salvarConsulta(dados);
+            return ResponseEntity.ok("A consulta deve ser cancelada com pelo menos 24 horas de antecedência, será cobrado uma taxa de cancelamento!");
         }
 
         validacoes.forEach(v -> v.validar(dados));
 
         // Irá entrar aqui se todas as validações passarem
         var consultaRetorno = salvarConsulta(dados);
-        return new DadosDetalhamentoConsulta(consultaRetorno.getId(), dados.id_doctor(), dados.cpf_patient(), dados.date());
+        return ResponseEntity.ok(new DadosDetalhamentoConsulta(consultaRetorno.getId(), dados.id_doctor(), dados.cpf_patient(), dados.date()));
     }
 
     private Consult salvarConsulta(DadosReagendamentoConsulta dados) {

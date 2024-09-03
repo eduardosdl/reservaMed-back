@@ -4,10 +4,8 @@ import com.api.reservamed.dtos.DadosReagendamentoConsulta;
 import com.api.reservamed.infra.ValidacaoException;
 import com.api.reservamed.repositories.ConsultRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.time.Duration;
-import java.time.LocalDateTime;
 
 //@Component
 public class ValidadorReagendamentoMenor24Hrs implements ValidadorReagendamentoDeConsulta {
