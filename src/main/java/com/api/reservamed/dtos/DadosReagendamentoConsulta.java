@@ -11,6 +11,5 @@ public record DadosReagendamentoConsulta(
                                          @NotNull Long id_doctor,
                                          @NotNull String cpf_patient,
                                          @NotNull @Future LocalDateTime date,
-                                         String speciality,
                                          @NotNull TypeConsult type) {
 }

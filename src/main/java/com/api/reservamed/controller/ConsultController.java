@@ -36,7 +36,7 @@ public class ConsultController {
         return ResponseEntity.ok(dto);
     }
 
-    @DeleteMapping("/cancelamento")
+    @DeleteMapping
     public ResponseEntity cancelar(@RequestBody @Valid DadosCancelamentoConsulta dados){
         return ResponseEntity.ok(cancelar.cancelarConsulta(dados));
     }
@@ -64,6 +64,7 @@ public class ConsultController {
     public ResponseEntity reschedule(@Valid @RequestBody DadosReagendamentoConsulta dados){
         if(consultaRepository.findById(dados.id()).isPresent()){
             reagendarConsulta.reagendar(dados);
+            return ResponseEntity.ok(reagendarConsulta.reagendar(dados));
         }
         return ResponseEntity.notFound().build();
     }

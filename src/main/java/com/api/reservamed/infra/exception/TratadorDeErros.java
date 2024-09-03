@@ -18,15 +18,19 @@ public class TratadorDeErros {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity tratarError400(MethodArgumentNotValidException ex){
+    public ResponseEntity<ErrorResponse> tratarError400(MethodArgumentNotValidException ex) {
         var erroOptional = ex.getFieldErrors().stream().findFirst();
 
         if (erroOptional.isPresent()) {
-            var dadosErro = new DadosErroValidacao(erroOptional.get());
-            return ResponseEntity.badRequest().body(dadosErro);
+            var fieldError = erroOptional.get();
+            String fieldName = fieldError.getField();
+            String defaultMessage = fieldError.getDefaultMessage();
+
+            String message = String.format("O campo %s %s", fieldName, defaultMessage);
+            return ResponseEntity.badRequest().body(new ErrorResponse(message));
         }
 
-        return ResponseEntity.badRequest().body(new DadosErroValidacao("desconhecido", "Erro de validação"));
+        return ResponseEntity.badRequest().body(new ErrorResponse("Erro de validação desconhecido"));
     }
 
     @ExceptionHandler(IllegalAccessException.class)
