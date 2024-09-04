@@ -17,7 +17,7 @@ public interface HistoryConsutRepository extends JpaRepository<HistoryConsult, L
 
     @Query("""
             select h.prescription from history_consult h
-            where h.id = :id
+            where h.id_consult = :id
             and h.status = 'P'
             """)
     Optional<String> findPrescriptionById(Long id);

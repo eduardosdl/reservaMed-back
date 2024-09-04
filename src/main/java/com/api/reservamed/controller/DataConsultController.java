@@ -1,7 +1,10 @@
 package com.api.reservamed.controller;
 
+import com.api.reservamed.model.Consult;
 import com.api.reservamed.repositories.ConsultRepository;
 import com.api.reservamed.repositories.HistoryConsutRepository;
+import org.aspectj.apache.bcel.generic.LocalVariableGen;
+import org.flywaydb.core.internal.reports.ReportDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,6 +29,11 @@ public class DataConsultController {
     @GetMapping("/{id}")
     public ResponseEntity getAllByPaciente(@PathVariable java.lang.Long id){
         return ResponseEntity.ok(repository.findAllByIdPatient(id));
+    }
+
+    @GetMapping("/consult/{id}")
+    public ResponseEntity<Object> getByConsult(@PathVariable Long id) {
+        return ResponseEntity.ok(repository.findByIdConsult(id));
     }
 
     @GetMapping("/prescription/{id}")
