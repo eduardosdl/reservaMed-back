@@ -2,6 +2,7 @@ package com.api.reservamed.controller;
 
 import com.api.reservamed.repositories.ConsultRepository;
 import com.api.reservamed.repositories.HistoryConsutRepository;
+import com.api.reservamed.service.HistoryConsultService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,11 +17,16 @@ public class DataConsultController {
     private HistoryConsutRepository repository;
 
     @Autowired
+    private HistoryConsultService service;
+
+    @Autowired
     private ConsultRepository consultRepository;
 
     @GetMapping
     public ResponseEntity getAll(){
-        return ResponseEntity.ok(consultRepository.findByStatusNot("A"));
+        return ResponseEntity.ok(
+                service.getAll()
+        );
     }
 
     @GetMapping("/{id}")
