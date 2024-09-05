@@ -1,18 +1,18 @@
 package com.api.reservamed.controller;
 
 import com.api.reservamed.dtos.PatientRegistrationData;
-import com.api.reservamed.infra.exception.ErrorResponse;
+import com.api.reservamed.dtos.PatientUpdateData;
 import com.api.reservamed.model.Patient;
 import com.api.reservamed.repositories.PatientRepository;
+import com.api.reservamed.service.PatientService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
+import jakarta.validation.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDate;
-import java.time.Period;
+import java.util.List;
 
 @RestController
 @RequestMapping("/patients")
@@ -21,10 +21,12 @@ public class PatientController {
     @Autowired
     private PatientRepository repository;
 
+    @Autowired
+    private PatientService service;
+
     @GetMapping
-    public ResponseEntity<Iterable<Patient>> getAll() {
-        Iterable<Patient> allPatients = repository.findAll();
-        return ResponseEntity.ok(allPatients);
+    public ResponseEntity<List<Patient>> getAll() {
+        return ResponseEntity.ok(repository.findAll());
     }
 
     @GetMapping("/{cpf}")
@@ -33,51 +35,39 @@ public class PatientController {
         if (patient != null) {
             return ResponseEntity.ok(patient);
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            return ResponseEntity.notFound().build();
         }
     }
 
     @Transactional
     @PostMapping
     public ResponseEntity<Object> created(@RequestBody @Valid PatientRegistrationData data) {
-        if (repository.existsByCpf(data.cpf())) {
-            return ResponseEntity.badRequest().body(new ErrorResponse("CPF já existe no banco de dados"));
+        try{
+            if (repository.existsByCpf(data.cpf())) {
+                return ResponseEntity.badRequest().body("CPF já existe no banco de dados");
+            }
+
+            Patient newPatient = new Patient(data);
+            var patient = repository.save(newPatient);
+            return ResponseEntity.status(HttpStatus.CREATED).body(patient); // 201 Created
+        }catch (Exception e){
+            throw new ValidationException("Aconteceu algum erro ao registrar um paciente: " + e.getMessage());
         }
-
-        int age = Period.between(data.birthDate(), LocalDate.now()).getYears();
-
-        Patient newPatient = new Patient(data);
-        var patient = repository.save(newPatient);
-        return ResponseEntity.status(HttpStatus.CREATED).body(patient); // 201 Created
     }
-
 
     @Transactional
     @PutMapping("/{cpf}")
-    public ResponseEntity<Object> update(@PathVariable String cpf, @RequestBody @Valid PatientRegistrationData data) {
+    public ResponseEntity<Object> update(@PathVariable String cpf, @RequestBody @Valid PatientUpdateData data) {
         Patient patient = repository.findByCpf(cpf);
         if (patient == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            return ResponseEntity.notFound().build();
         }
 
-        if (!data.cpf().equals(cpf) && repository.existsByCpf(data.cpf())) {
-            return ResponseEntity.badRequest().body(new ErrorResponse("CPF já existe no banco de dados"));
+        if (data.cpf() != null && (!data.cpf().equals(cpf)) && repository.existsByCpf(data.cpf())) {
+            return ResponseEntity.badRequest().body("CPF já existe no banco de dados");
         }
 
-        patient.setName(data.name());
-        patient.setEmail(data.email());
-        patient.setBirthDate(data.birthDate());
-        patient.setCpf(data.cpf());
-        patient.setCellPhone(data.cellPhone());
-        patient.setCep(data.cep());
-        patient.setStreet(data.street());
-        patient.setState(data.state());
-        patient.setCity(data.city());
-        patient.setMedicalHistory(data.medicalHistory());
-        patient.setGuardianCpf(data.guardianCpf());
-
-        repository.save(patient);
-        return ResponseEntity.ok(patient);
+        return ResponseEntity.ok(service.updatePatient(data, cpf));
     }
 
     @Transactional
@@ -86,9 +76,9 @@ public class PatientController {
         Patient patient = repository.findByCpf(cpf);
         if (patient != null) {
             repository.delete(patient);
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+            return ResponseEntity.noContent().build();
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            return ResponseEntity.notFound().build();
         }
     }
 

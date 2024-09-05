@@ -19,12 +19,13 @@ public class DoctorsController {
     DoctorsService doctorsService;
 
     @GetMapping
-    public List doctors(){
-        return doctorsService.listAll();
+    public ResponseEntity doctors(){
+        return ResponseEntity.ok(doctorsService.listAll());
     }
 
     @GetMapping("/{crm}")
-    public Object doctor(@PathVariable String crm){
+    public ResponseEntity<Doctors> doctor(@PathVariable String crm){
+
         return doctorsService.listDoctorCrm(crm);
     }
 
@@ -42,7 +43,7 @@ public class DoctorsController {
 
     @Transactional
     @PutMapping("/{crm}")
-    public Object updateDoctor(@PathVariable String crm ,@RequestBody Doctors doctor) {
-        return doctorsService.updateDoctor(crm,doctor);
+    public ResponseEntity updateDoctor(@PathVariable String crm ,@RequestBody Doctors doctor) {
+        return ResponseEntity.ok(doctorsService.updateDoctor(crm,doctor));
     }
 }

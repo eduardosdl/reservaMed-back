@@ -1,6 +1,5 @@
 package com.api.reservamed.infra.exception;
 
-import com.api.reservamed.infra.ValidacaoException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,7 +33,7 @@ public class TratadorDeErros {
     }
 
     @ExceptionHandler(IllegalAccessException.class)
-    public ResponseEntity tratarError401(){
+    public ResponseEntity<?> tratarError401(){
         return ResponseEntity.badRequest().body("Seu usuário não é permitido para acessar esta rota!");
     }
 

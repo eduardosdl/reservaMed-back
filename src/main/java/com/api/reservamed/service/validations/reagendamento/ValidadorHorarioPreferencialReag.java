@@ -1,7 +1,7 @@
 package com.api.reservamed.service.validations.reagendamento;
 
 import com.api.reservamed.dtos.DadosReagendamentoConsulta;
-import com.api.reservamed.infra.ValidacaoException;
+import com.api.reservamed.infra.exception.ValidacaoException;
 import org.springframework.stereotype.Component;
 
 @Component

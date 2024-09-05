@@ -1,6 +1,6 @@
 package com.api.reservamed.service;
 
-import com.api.reservamed.infra.ValidacaoException;
+import com.api.reservamed.infra.exception.ValidacaoException;
 import com.api.reservamed.model.Queue;
 import com.api.reservamed.repositories.QueueRepository;
 import org.springframework.beans.factory.annotation.Autowired;
