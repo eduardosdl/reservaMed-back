@@ -34,6 +34,11 @@ public class DataConsultController {
         return ResponseEntity.ok(repository.findAllByIdPatient(id));
     }
 
+    @GetMapping("/consult/{id}")
+    public ResponseEntity<Object> getByConsult(@PathVariable Long id) {
+        return ResponseEntity.ok(repository.findByIdConsult(id));
+    }
+
     @GetMapping("/prescription/{id}")
     public ResponseEntity closed(@PathVariable Long id){
         try{

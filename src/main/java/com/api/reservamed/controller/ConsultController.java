@@ -41,7 +41,7 @@ public class ConsultController {
         return ResponseEntity.ok(cancelar.cancelarConsulta(dados));
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/complete/{id}")
     public ResponseEntity confirmarConsulta(@PathVariable Long id, @RequestBody DadosDiagnostic dadosDiagnostic){
         var consultPresent = consultaRepository.findById(id);
         if(consultPresent.isPresent()){
