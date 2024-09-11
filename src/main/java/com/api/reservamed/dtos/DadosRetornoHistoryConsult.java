@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 public record DadosRetornoHistoryConsult(Long id_consult,
                                          Patient patient,
-                                         Doctors doctors,
+                                         Doctors doctor,
                                          String type_consult,
                                          LocalDateTime date,
                                          LocalDateTime date_cancellation,
