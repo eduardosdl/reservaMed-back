@@ -1,7 +1,7 @@
 package com.api.reservamed.service;
 
 import com.api.reservamed.dtos.DadosRetornoHistoryConsult;
-import com.api.reservamed.infra.ValidacaoException;
+import com.api.reservamed.infra.exception.ValidacaoException;
 import com.api.reservamed.model.Doctors;
 import com.api.reservamed.model.HistoryConsult;
 import com.api.reservamed.model.Patient;

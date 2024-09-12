@@ -2,7 +2,7 @@ package com.api.reservamed.service;
 
 import com.api.reservamed.dtos.DadosDetalhamentoConsulta;
 import com.api.reservamed.dtos.DadosReagendamentoConsulta;
-import com.api.reservamed.infra.ValidacaoException;
+import com.api.reservamed.infra.exception.ValidacaoException;
 import com.api.reservamed.model.Consult;
 import com.api.reservamed.repositories.ConsultRepository;
 import com.api.reservamed.repositories.DoctorsRepository;
