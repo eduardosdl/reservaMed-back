@@ -14,9 +14,10 @@ public interface ConsultRepository extends JpaRepository<Consult, Long> {
 
     @Query("""
     select case when count(c) > 0 then false else true end
-    from consult c
-    where c.doctor.id = :id_medico
-    and c.date = :date
+                                  from consult c
+                                  where c.doctor.id = :id_medico
+                                  and c.date = :date
+                                  and c.tp_status != 'C'
 """)
     boolean consultaDisponibilidadeMedicoNoHorario(@Param("id_medico") Long id_medico, @Param("date") LocalDateTime date);
 
