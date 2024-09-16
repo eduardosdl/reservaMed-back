@@ -53,7 +53,6 @@ public class ValidadorMedicoLivreNoHorario implements ValidadorAgendamentoDeCons
 
             queueService.insertQueue(queue);
         }catch (Exception e){
-            System.out.println("Chegou aqui " + e.getMessage());
             throw new ValidacaoException("Error: " + e.getMessage());
         }
     }

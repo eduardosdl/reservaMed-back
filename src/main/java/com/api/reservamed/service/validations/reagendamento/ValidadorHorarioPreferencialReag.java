@@ -8,8 +8,6 @@ import org.springframework.stereotype.Component;
 public class ValidadorHorarioPreferencialReag implements ValidadorReagendamentoDeConsulta {
 
     public void validar(DadosReagendamentoConsulta dados){
-        System.out.println("Chegou aqui 1");
-        System.out.println("Tipo: " + dados.type().getDescription());
         if(dados.type().name() .equals("PEDIATRIC")){
             validarHorarioPediatrico(dados);
         } else if (dados.type().name() .equals("SPECIALIZED")) {

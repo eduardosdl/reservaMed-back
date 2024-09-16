@@ -30,7 +30,7 @@ public class ValidadorMedicoLivreNoHorarioReag implements ValidadorReagendamento
 
     @Override
     public void validar(DadosReagendamentoConsulta dados) {
-        if(!(repository.getReferenceById(dados.id()).equals(dados.date()))){
+        if(!(repository.getReferenceById(dados.id()).getDate().equals(dados.date()))){
             if((!repository.consultaDisponibilidadeMedicoNoHorario(dados.id_doctor(), dados.date()))){
                 insertQueue(dados);
                 throw new ValidacaoException("Medico não está disponível no horário alocado! Mas foi colocado na fila de espera. ");
@@ -55,7 +55,6 @@ public class ValidadorMedicoLivreNoHorarioReag implements ValidadorReagendamento
 
             queueService.insertQueue(queue);
         }catch (Exception e){
-            System.out.println("Chegou aqui " + e.getMessage());
             throw new ValidacaoException("Error: " + e.getMessage());
         }
     }

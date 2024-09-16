@@ -17,9 +17,8 @@ public interface ConsultRepository extends JpaRepository<Consult, Long> {
                                    from consult c
                                    where c.doctor.id = :id_medico
                                    and c.date = :date
-                                   and c.status != 'C'
-    
-""")
+                                   and c.status not in ('C', 'P')
+    """)
     boolean consultaDisponibilidadeMedicoNoHorario(@Param("id_medico") Long id_medico, @Param("date") LocalDateTime date);
 
     List<Consult> findAllById(Long id);
