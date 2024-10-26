@@ -1,11 +1,14 @@
 package com.api.reservamed.service;
 
-import com.api.reservamed.dtos.PatientUpdateData;
+import com.api.reservamed.dtos.CreatePatientDTO;
+import com.api.reservamed.dtos.UpdatePatientDTO;
+import com.api.reservamed.infra.exception.ValidationException;
 import com.api.reservamed.model.Patient;
 import com.api.reservamed.repositories.PatientRepository;
-import jakarta.validation.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class PatientService {
@@ -13,56 +16,72 @@ public class PatientService {
     @Autowired
     private PatientRepository repository;
 
-    public Patient updatePatient(PatientUpdateData data, String cpf){
-        try{
-            Patient patient = repository.findByCpf(cpf);
-            if(data.name()!=null){
-                patient.setName(data.name());
-            }
+    public List<Patient> getAll() {
+        return repository.findAllByActiveTrue();
+    }
 
-            if(data.email()!=null){
-                patient.setEmail(data.email());
-            }
+    public Patient getByCpf(String cpf) {
+        return repository.findByCpf(cpf)
+                .orElseThrow(() -> new ValidationException("Paciente não encontrado"));
+    }
 
-            if(data.birthDate()!=null){
-                patient.setBirthDate(data.birthDate());
-            }
+    public Patient create(CreatePatientDTO patientData) {
+        try {
+            validateCpfUniqueness(patientData.cpf());
 
-            if(data.cpf()!=null){
-                patient.setCpf(data.cpf());
-            }
-
-            if(data.cellPhone()!=null){
-                patient.setCellPhone(data.cellPhone());
-            }
-
-            if(data.cep()!=null){
-                patient.setCep(data.cep());
-            }
-
-            if(data.street()!=null){
-                patient.setStreet(data.street());
-            }
-
-            if(data.state()!=null){
-                patient.setState(data.state());
-            }
-
-            if(data.city()!=null){
-                patient.setCity(data.city());
-            }
-
-            if(data.medicalHistory()!=null){
-                patient.setMedicalHistory(data.medicalHistory());
-            }
-
-            if(data.guardianCpf()!=null){
-                patient.setGuardianCpf(data.guardianCpf());
-            }
+            Patient patient = new Patient(patientData);
 
             return repository.save(patient);
-        }catch (Exception e){
-            throw new ValidationException("Erro ao atualizar um paciente: " + e.getMessage());
+        } catch (ValidationException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new RuntimeException("Houve um erro ao salvar paciente");
         }
+    }
+
+    public Patient update(Long id, UpdatePatientDTO patientData) {
+        try {
+            Patient existingPatient = repository.findById(id)
+                    .orElseThrow(() -> new ValidationException("Paciente não encontrado"));
+
+
+            if (patientData.cpf() != null && !patientData.cpf().equals(existingPatient.getCpf())) {
+                validateCpfUniqueness(patientData.cpf());
+            }
+
+            existingPatient.updateFromDTO(patientData);
+
+            return existingPatient;
+        } catch (ValidationException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new ValidationException("houve um erro ao atualizar paciente");
+        }
+    }
+
+    public void deleteByCpf(String cpf) {
+        try {
+            repository.findByCpf(cpf).ifPresent(patient -> {
+                patient.setActive(false);
+            });
+        } catch (Exception e) {
+            throw new ValidationException("Houve um erro ao excluir paciente");
+        }
+    }
+
+    public void deleteById(Long id) {
+        try {
+            repository.findById(id).ifPresent(patient -> {
+                patient.setActive(false);
+            });
+        } catch (Exception e) {
+            throw new ValidationException("Houve um erro ao excluir paciente");
+        }
+    }
+
+    private void validateCpfUniqueness(String cpf) {
+        repository.findByCpf(cpf).ifPresent(existingPatient -> {
+            throw new ValidationException("CPF já cadastrado");
+        });
     }
 }

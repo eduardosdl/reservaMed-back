@@ -37,8 +37,8 @@ public class TratadorDeErros {
         return ResponseEntity.badRequest().body("Seu usuário não é permitido para acessar esta rota!");
     }
 
-    @ExceptionHandler(ValidacaoException.class)
-    public ResponseEntity<ErrorResponse> handleValidacaoException(ValidacaoException ex) {
+    @ExceptionHandler(ValidationException.class)
+    public ResponseEntity<ErrorResponse> handleValidacaoException(ValidationException ex) {
         ErrorResponse errorResponse = new ErrorResponse(ex.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }

@@ -1,7 +1,7 @@
 package com.api.reservamed.service;
 
 import com.api.reservamed.dtos.DadosCancelamentoConsulta;
-import com.api.reservamed.infra.exception.ValidacaoException;
+import com.api.reservamed.infra.exception.ValidationException;
 import com.api.reservamed.model.HistoryConsult;
 import com.api.reservamed.repositories.ConsultRepository;
 import com.api.reservamed.repositories.DoctorsRepository;
@@ -32,19 +32,19 @@ public class CancelamentoDeConsultas {
         var consulta = consultaRepository.getReferenceById(dados.id());
 
         if (!consultaRepository.existsById(consulta.getId())) {
-            throw new ValidacaoException("Id da consulta informada não existe");
+            throw new ValidationException("Id da consulta informada não existe");
         }
 
         if (!pacienteRepository.existsById(consulta.getPatient().getId())) {
-            throw new ValidacaoException("Id do paciente informado não existe");
+            throw new ValidationException("Id do paciente informado não existe");
         }
 
         if (!medicoRepository.existsById(consulta.getDoctor().getId())) {
-            throw new ValidacaoException("Id do medico informado não existe");
+            throw new ValidationException("Id do medico informado não existe");
         }
 
         if(dados.reason() == null){
-            throw new ValidacaoException("O motivo não pode ser nulo");
+            throw new ValidationException("O motivo não pode ser nulo");
         }
 
         return salvarCancelamento(dados);
@@ -55,7 +55,7 @@ public class CancelamentoDeConsultas {
             String retorno = null;
             var consulta = consultaRepository.getReferenceById(dados.id());
             if(consulta.getStatus().equals("C")){
-                throw new ValidacaoException("A consulta já foi cancelada");
+                throw new ValidationException("A consulta já foi cancelada");
             }
 
             // Verifica se a data atual é anterior à data da consulta
@@ -69,7 +69,7 @@ public class CancelamentoDeConsultas {
                             ", caso o cancelamento seja feito será cobrado uma taxa de cancelamento!";
                 }
             }else{
-                throw new ValidacaoException("A consulta não pode ser cancelada pois já passou do horário agendado");
+                throw new ValidationException("A consulta não pode ser cancelada pois já passou do horário agendado");
             }
 
             consulta.setStatus("C");
@@ -80,7 +80,7 @@ public class CancelamentoDeConsultas {
             historyConsutRepository.save(historyConsult);
             return retorno;
         }catch (Exception e){
-            throw new ValidacaoException("Aconteceu um erro ao excluir consulta: " + e.getMessage());
+            throw new ValidationException("Aconteceu um erro ao excluir consulta: " + e.getMessage());
         }
     }
 }

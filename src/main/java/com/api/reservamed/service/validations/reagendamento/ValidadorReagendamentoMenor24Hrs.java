@@ -1,7 +1,7 @@
 package com.api.reservamed.service.validations.reagendamento;
 
 import com.api.reservamed.dtos.DadosReagendamentoConsulta;
-import com.api.reservamed.infra.exception.ValidacaoException;
+import com.api.reservamed.infra.exception.ValidationException;
 import com.api.reservamed.repositories.ConsultRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -19,7 +19,7 @@ public class ValidadorReagendamentoMenor24Hrs implements ValidadorReagendamentoD
         var dataConsulta = consult.getDate();
         var diferencaEmMinutos = Duration.between(dataConsulta, dataReagendamentoConsulta).toHours();
         if(diferencaEmMinutos < 24){
-            throw new ValidacaoException("Consulta não pode ser reagendada com menos de 24h");
+            throw new ValidationException("Consulta não pode ser reagendada com menos de 24h");
         }
     }
 }

@@ -1,7 +1,7 @@
 package com.api.reservamed.service;
 
 import com.api.reservamed.dtos.DadosConfirmaConsulta;
-import com.api.reservamed.infra.exception.ValidacaoException;
+import com.api.reservamed.infra.exception.ValidationException;
 import com.api.reservamed.model.HistoryConsult;
 import com.api.reservamed.repositories.ConsultRepository;
 import com.api.reservamed.repositories.HistoryConsutRepository;
@@ -19,7 +19,7 @@ public class ConfirmarConsulta {
 
     public DadosConfirmaConsulta confirmar(DadosConfirmaConsulta dadosConfirmaConsulta){
         if(dadosConfirmaConsulta.status().equals("C")){
-            throw new ValidacaoException("A consulta já foi cancelada, não é possível alterar para processada");
+            throw new ValidationException("A consulta já foi cancelada, não é possível alterar para processada");
         }
         finalizarConsulta(dadosConfirmaConsulta);
         inserirHistoricoConsulta(dadosConfirmaConsulta);

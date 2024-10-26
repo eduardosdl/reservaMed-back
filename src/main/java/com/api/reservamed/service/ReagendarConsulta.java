@@ -2,7 +2,7 @@ package com.api.reservamed.service;
 
 import com.api.reservamed.dtos.DadosDetalhamentoConsulta;
 import com.api.reservamed.dtos.DadosReagendamentoConsulta;
-import com.api.reservamed.infra.exception.ValidacaoException;
+import com.api.reservamed.infra.exception.ValidationException;
 import com.api.reservamed.model.Consult;
 import com.api.reservamed.repositories.ConsultRepository;
 import com.api.reservamed.repositories.DoctorsRepository;
@@ -29,19 +29,22 @@ public class ReagendarConsulta {
     @Autowired
     private List<ValidadorReagendamentoDeConsulta> validacoes;
 
+    @Autowired
+    private PatientService patientService;
+
     public ResponseEntity reagendar(DadosReagendamentoConsulta dados){
 
         if (!pacienteRepository.existsByCpf(dados.cpf_patient())) {
-            throw new ValidacaoException("CPF do paciente informado não existe");
+            throw new ValidationException("CPF do paciente informado não existe");
         }
 
         if (dados.id_doctor()!= null && !medicoRepository.existsById(dados.id_doctor())) {
-            throw new ValidacaoException("Id do medico informado não existe");
+            throw new ValidationException("Id do medico informado não existe");
         }
 
         var consulta = consultaRepository.getReferenceById(dados.id());
         if(consulta.getStatus().equals("C")){
-            throw new ValidacaoException("A consulta já foi cancelada");
+            throw new ValidationException("A consulta já foi cancelada");
         }
         // Calcula a diferença de horas entre a data atual e a data da consulta
         long hoursDifference = java.time.Duration.between(LocalDateTime.now(), consulta.getDate()).toHours();
@@ -61,7 +64,7 @@ public class ReagendarConsulta {
 
     private Consult salvarConsulta(DadosReagendamentoConsulta dados) {
         var medico = medicoRepository.getReferenceById(dados.id_doctor());
-        var paciente = pacienteRepository.findByCpf(dados.cpf_patient());
+        var paciente = patientService.getByCpf(dados.cpf_patient());
         var consulta = new Consult(medico, paciente, dados.date(), dados.type());
         consulta.setId(dados.id());
         return consultaRepository.save(consulta);

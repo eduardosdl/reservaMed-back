@@ -1,7 +1,7 @@
 package com.api.reservamed.service;
 
 import com.api.reservamed.dtos.DoctorDto;
-import com.api.reservamed.infra.exception.ValidacaoException;
+import com.api.reservamed.infra.exception.ValidationException;
 import com.api.reservamed.model.Doctors;
 import com.api.reservamed.repositories.DoctorsRepository;
 import jakarta.transaction.Transactional;
@@ -22,7 +22,7 @@ public class DoctorsService {
             return doctorsRepository.findAll();
         }
         catch (Exception e){
-            throw new ValidacaoException("Error: " + e.getMessage());
+            throw new ValidationException("Error: " + e.getMessage());
         }
     }
 
@@ -90,7 +90,7 @@ public class DoctorsService {
 
                 return doctorsRepository.save(doctors);
             } else {
-                throw new ValidacaoException("User not found");
+                throw new ValidationException("User not found");
             }
         }
     }

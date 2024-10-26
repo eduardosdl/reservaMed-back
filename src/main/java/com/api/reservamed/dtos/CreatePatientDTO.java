@@ -7,7 +7,7 @@ import jakarta.validation.constraints.Pattern;
 
 import java.time.LocalDate;
 
-public record PatientRegistrationData(
+public record CreatePatientDTO(
         @NotBlank String name,
         @NotNull LocalDate birthDate,
         @NotBlank @Pattern(regexp = "\\d{11}", message = "O campo CPF deve ter 11 dígitos") String cpf,
@@ -19,5 +19,7 @@ public record PatientRegistrationData(
         String city,
         String allergy,
         String medicalHistory,
-        String guardianCpf ){}
+        String guardianCpf
+) {
+}
 

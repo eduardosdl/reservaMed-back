@@ -1,6 +1,6 @@
 package com.api.reservamed.service;
 
-import com.api.reservamed.infra.exception.ValidacaoException;
+import com.api.reservamed.infra.exception.ValidationException;
 import com.api.reservamed.model.Queue;
 import com.api.reservamed.repositories.QueueRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,7 @@ public class QueueService {
         try{
             queueRepository.save(queue);
         }catch (Exception e){
-            throw new ValidacaoException("Error: " + e.getMessage());
+            throw new ValidationException("Error: " + e.getMessage());
         }
 
     }

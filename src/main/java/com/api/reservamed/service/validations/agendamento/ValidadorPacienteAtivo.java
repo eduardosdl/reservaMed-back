@@ -2,7 +2,7 @@ package com.api.reservamed.service.validations.agendamento;
 
 
 import com.api.reservamed.dtos.DadosAgendamentoConsulta;
-import com.api.reservamed.infra.exception.ValidacaoException;
+import com.api.reservamed.infra.exception.ValidationException;
 import com.api.reservamed.repositories.PatientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -16,7 +16,7 @@ public class ValidadorPacienteAtivo implements ValidadorAgendamentoDeConsulta{
     public void validar(DadosAgendamentoConsulta dados){
         var pacienteEstaAtivo = pacienteRepository.findActiveByCpf(dados.cpf_patient());
         if(!pacienteEstaAtivo){
-            throw new ValidacaoException("Consulta não pode ser agendada com paciente excluído");
+            throw new ValidationException("Consulta não pode ser agendada com paciente excluído");
         }
     }
 }

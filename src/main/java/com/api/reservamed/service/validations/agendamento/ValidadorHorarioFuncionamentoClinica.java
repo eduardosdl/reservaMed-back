@@ -1,7 +1,7 @@
 package com.api.reservamed.service.validations.agendamento;
 
 import com.api.reservamed.dtos.DadosAgendamentoConsulta;
-import com.api.reservamed.infra.exception.ValidacaoException;
+import com.api.reservamed.infra.exception.ValidationException;
 import org.springframework.stereotype.Component;
 
 import java.time.DayOfWeek;
@@ -16,7 +16,7 @@ public class ValidadorHorarioFuncionamentoClinica implements ValidadorAgendament
         var antesDaAberturaDaClinica = dataConsulta.getHour() < 7;
         var depoisDoEncerramentoDaClinica = dataConsulta.getHour() > 18;
         if (domingo || antesDaAberturaDaClinica || depoisDoEncerramentoDaClinica){
-            throw new ValidacaoException("Data da consulta fora do horário de funcionamento da clínica!");
+            throw new ValidationException("Data da consulta fora do horário de funcionamento da clínica!");
         }
     }
 }

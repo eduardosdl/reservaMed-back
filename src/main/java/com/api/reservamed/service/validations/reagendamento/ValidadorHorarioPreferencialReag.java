@@ -1,7 +1,7 @@
 package com.api.reservamed.service.validations.reagendamento;
 
 import com.api.reservamed.dtos.DadosReagendamentoConsulta;
-import com.api.reservamed.infra.exception.ValidacaoException;
+import com.api.reservamed.infra.exception.ValidationException;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -21,7 +21,7 @@ public class ValidadorHorarioPreferencialReag implements ValidadorReagendamentoD
         var antesDas9 = dataConsulta.getHour() < 9;
         var depoisDas16 = dataConsulta.getHour() > 16;
         if (antesDas9 || depoisDas16){
-            throw new ValidacaoException("Data da consulta fora do horário da consulta do tipo pediátrico, 9HS AS 16H");
+            throw new ValidationException("Data da consulta fora do horário da consulta do tipo pediátrico, 9HS AS 16H");
         }
     }
 
@@ -30,7 +30,7 @@ public class ValidadorHorarioPreferencialReag implements ValidadorReagendamentoD
         var antesDas9 = dataConsulta.getHour() < 9;
         var depoisDas16 = dataConsulta.getHour() > 16;
         if (antesDas9 || depoisDas16){
-            throw new ValidacaoException("Data da consulta fora do horário da consulta do tipo especializado, 9HS AS 16H");
+            throw new ValidationException("Data da consulta fora do horário da consulta do tipo especializado, 9HS AS 16H");
         }
     }
 }
