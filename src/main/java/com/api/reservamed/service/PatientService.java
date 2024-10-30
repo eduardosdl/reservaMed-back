@@ -55,7 +55,7 @@ public class PatientService {
         } catch (ValidationException e) {
             throw e;
         } catch (Exception e) {
-            throw new ValidationException("houve um erro ao atualizar paciente");
+            throw new RuntimeException("houve um erro ao atualizar paciente");
         }
     }
 
@@ -65,7 +65,7 @@ public class PatientService {
                 patient.setActive(false);
             });
         } catch (Exception e) {
-            throw new ValidationException("Houve um erro ao excluir paciente");
+            throw new RuntimeException("Houve um erro ao excluir paciente");
         }
     }
 
@@ -75,7 +75,7 @@ public class PatientService {
                 patient.setActive(false);
             });
         } catch (Exception e) {
-            throw new ValidationException("Houve um erro ao excluir paciente");
+            throw new RuntimeException("Houve um erro ao excluir paciente");
         }
     }
 

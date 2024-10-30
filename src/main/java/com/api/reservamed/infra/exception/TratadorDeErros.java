@@ -43,9 +43,9 @@ public class TratadorDeErros {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
 
-    private record DadosErroValidacao(String field, String message){
-        public DadosErroValidacao(FieldError error){
-            this(error.getField(), error.getDefaultMessage());
-        }
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<ErrorResponse> handleRuntimeException(RuntimeException ex) {
+        ErrorResponse errorResponse = new ErrorResponse(ex.getMessage());
+        return ResponseEntity.internalServerError().body(errorResponse);
     }
 }
