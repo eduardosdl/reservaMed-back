@@ -20,7 +20,7 @@ public class Consult {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "doctor_id")
-    private Doctors doctor;
+    private Doctor doctor;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "patient_id")
@@ -37,7 +37,7 @@ public class Consult {
 
     private String status;
 
-    public Consult(Doctors doctor, Patient patient, LocalDateTime date, TypeConsult type) {
+    public Consult(Doctor doctor, Patient patient, LocalDateTime date, TypeConsult type) {
         this.doctor = doctor;
         this.patient = patient;
         this.date = date;
@@ -45,7 +45,7 @@ public class Consult {
         this.type_consult = type.getDescription();
     }
 
-    public Consult(Long id, Doctors doctor, Patient patient, LocalDateTime date, TypeConsult type) {
+    public Consult(Long id, Doctor doctor, Patient patient, LocalDateTime date, TypeConsult type) {
         this.id = id;
         this.doctor = doctor;
         this.patient = patient;

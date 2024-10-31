@@ -1,9 +1,5 @@
 package com.api.reservamed.dtos;
 
-import com.api.reservamed.model.Consult;
-import com.api.reservamed.model.Doctors;
-import com.api.reservamed.model.Patient;
-import jakarta.persistence.*;
 import jakarta.validation.Valid;
 
 import java.time.LocalDateTime;

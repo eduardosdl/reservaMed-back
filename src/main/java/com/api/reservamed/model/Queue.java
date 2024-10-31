@@ -22,7 +22,7 @@ public class Queue {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "doctor_id")
-    private Doctors doctor;
+    private Doctor doctor;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "patient_id")
@@ -39,14 +39,14 @@ public class Queue {
 
     private String status;
 
-    public Queue(Doctors doctor, Patient patient, LocalDateTime date, TypeConsult type) {
+    public Queue(Doctor doctor, Patient patient, LocalDateTime date, TypeConsult type) {
         this.doctor = doctor;
         this.patient = patient;
         this.date = date;
         this.type_consult = type.getDescription();
     }
 
-    public Queue(Long id, Doctors doctor, Patient patient, LocalDateTime date, TypeConsult type) {
+    public Queue(Long id, Doctor doctor, Patient patient, LocalDateTime date, TypeConsult type) {
         this.id = id;
         this.doctor = doctor;
         this.patient = patient;

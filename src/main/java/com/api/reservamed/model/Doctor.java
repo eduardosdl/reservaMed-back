@@ -1,5 +1,6 @@
 package com.api.reservamed.model;
 
+import com.api.reservamed.dtos.RequestDoctorDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,7 +13,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Doctors {
+public class Doctor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -23,5 +24,19 @@ public class Doctors {
 
     @Column(name = "cell_phone")
     private String cellPhone;
-    private Boolean active;
+    private Boolean active = true;
+
+    public Doctor(RequestDoctorDTO data) {
+        this.name = data.name();
+        this.crm = data.crm();
+        this.cellPhone = data.cellPhone();
+        this.specialty = data.specialty();
+    }
+
+    public void updateFromDTO(RequestDoctorDTO data) {
+        this.name = data.name();
+        this.crm = data.crm();
+        this.cellPhone = data.cellPhone();
+        this.specialty = data.specialty();
+    }
 }

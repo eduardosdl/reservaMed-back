@@ -2,7 +2,7 @@ package com.api.reservamed.service;
 
 import com.api.reservamed.dtos.DadosRetornoHistoryConsult;
 import com.api.reservamed.infra.exception.ValidationException;
-import com.api.reservamed.model.Doctors;
+import com.api.reservamed.model.Doctor;
 import com.api.reservamed.model.HistoryConsult;
 import com.api.reservamed.model.Patient;
 import com.api.reservamed.repositories.ConsultRepository;
@@ -38,7 +38,7 @@ public class HistoryConsultService {
             if(!historyConsultReturn.isEmpty()){
                 for (HistoryConsult hcr : historyConsultReturn){
                     Optional<Patient> patient = patientRepository.findById(hcr.getId_patient());
-                    Optional<Doctors> doctors = doctorsRepository.findById(hcr.getId_doctor());
+                    Optional<Doctor> doctors = doctorsRepository.findById(hcr.getId_doctor());
                     listReturnHcr.add(new DadosRetornoHistoryConsult(hcr.getId_consult(),
                             patient.get(),
                             doctors.get(),

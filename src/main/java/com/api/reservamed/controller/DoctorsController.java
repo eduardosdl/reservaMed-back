@@ -1,7 +1,7 @@
 package com.api.reservamed.controller;
 
-import com.api.reservamed.dtos.DoctorDto;
-import com.api.reservamed.model.Doctors;
+import com.api.reservamed.dtos.RequestDoctorDTO;
+import com.api.reservamed.model.Doctor;
 import com.api.reservamed.service.DoctorsService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -16,34 +16,33 @@ import java.util.List;
 public class DoctorsController {
 
     @Autowired
-    DoctorsService doctorsService;
+    DoctorsService service;
 
     @GetMapping
-    public ResponseEntity doctors(){
-        return ResponseEntity.ok(doctorsService.listAll());
+    public ResponseEntity<List<Doctor>> getAll(){
+        return ResponseEntity.ok(service.listAll());
     }
 
     @GetMapping("/{crm}")
-    public ResponseEntity<Doctors> doctor(@PathVariable String crm){
-
-        return doctorsService.listDoctorCrm(crm);
+    public ResponseEntity<Doctor> getByCrm(@PathVariable String crm){
+        return ResponseEntity.ok(service.getByCrm(crm));
     }
 
     @Transactional
     @PostMapping
-    public ResponseEntity addDoctor(@RequestBody @Valid DoctorDto data){
-        return doctorsService.saveDoctor(data);
+    public ResponseEntity<Doctor> create(@RequestBody @Valid RequestDoctorDTO data){
+        return ResponseEntity.ok(service.create(data));
     }
 
-    @Transactional
-    @DeleteMapping("/{crm}")
-    public void deleteDoctor(@PathVariable String crm) {
-        doctorsService.dellDoctor(crm);
-    }
+//    @Transactional
+//    @DeleteMapping("/{crm}")
+//    public void deleteDoctor(@PathVariable String crm) {
+//        service.dellDoctor(crm);
+//    }
 
-    @Transactional
-    @PutMapping("/{crm}")
-    public ResponseEntity updateDoctor(@PathVariable String crm ,@RequestBody Doctors doctor) {
-        return ResponseEntity.ok(doctorsService.updateDoctor(crm,doctor));
-    }
+//    @Transactional
+//    @PutMapping("/{crm}")
+//    public ResponseEntity updateDoctor(@PathVariable String crm ,@RequestBody Doctors doctor) {
+//        return ResponseEntity.ok(service.updateDoctor(crm,doctor));
+//    }
 }
