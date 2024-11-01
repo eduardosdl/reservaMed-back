@@ -9,22 +9,32 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class DoctorsService {
     @Autowired
     DoctorsRepository repository;
 
-    public List<Doctor> listAll(){
+    public List<Doctor> listAll() {
         try {
             return repository.findAll();
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             throw new RuntimeException("Houve um erro ao buscar médicos");
         }
     }
 
-    public Doctor getByCrm(String crm){
+    public Doctor getById(Long id) {
+        try {
+            return repository.findById(id).orElseThrow(EntityNotFoundException::new);
+        } catch (EntityNotFoundException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new RuntimeException("Houve um erro ao buscar CRM");
+        }
+    }
+
+    public Doctor getByCrm(String crm) {
         try {
             return repository.findByCrm(crm).orElseThrow(EntityNotFoundException::new);
         } catch (EntityNotFoundException e) {
@@ -34,7 +44,7 @@ public class DoctorsService {
         }
     }
 
-    public Doctor create(RequestDoctorDTO doctorData){
+    public Doctor create(RequestDoctorDTO doctorData) {
         try {
             validateCrm(doctorData.crm());
             validateCellPhone(doctorData.cellPhone());
@@ -49,13 +59,43 @@ public class DoctorsService {
         }
     }
 
-    // falta adicionar atualização e exclusão
+    public Doctor update(String crm, RequestDoctorDTO doctorData) {
+        try {
+            Doctor doctor = repository.findByCrm(crm).orElseThrow(EntityNotFoundException::new);
+
+            if (doctorData.crm() != null && !Objects.equals(doctor.getCrm(), doctorData.crm())) {
+                validateCrm(doctorData.crm());
+            }
+
+            if (doctorData.cellPhone() != null && !Objects.equals(doctor.getCellPhone(), doctorData.cellPhone())) {
+                validateCellPhone(doctorData.cellPhone());
+            }
+
+            doctor.updateFromDTO(doctorData);
+
+            return doctor;
+        } catch (ValidationException | EntityNotFoundException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new RuntimeException("Houve um erro ao atualizar médico");
+        }
+    }
+
+    public void deleteByCrm(String crm) {
+        try {
+            repository.findByCrm(crm).ifPresent(existingDoctor -> {
+                existingDoctor.setActive(false);
+            });
+        } catch (Exception e) {
+            throw new RuntimeException("Houve um erro ao tentar excluir médico");
+        }
+    }
 
     private void validateCrm(String crm) {
         if (crm == null) throw new ValidationException("Informe um CRM");
 
         repository.findByCrm(crm).ifPresent(existingDoctor -> {
-                throw new ValidationException("CRM já cadastrado");
+            throw new ValidationException("CRM já cadastrado");
         });
     }
 
@@ -66,49 +106,4 @@ public class DoctorsService {
             throw new ValidationException("Número de telefone ja cadastrado");
         });
     }
-
-//    @Transactional
-//    public ResponseEntity<Object> dellDoctor(String crm) {
-//
-//        Doctors doctors = doctorsRepository.findByCrm(crm);
-//
-//        if (doctors != null) {
-//            doctorsRepository.delete(doctors);
-//            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-//        } else {
-//            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-//        }
-//    }
-//    @Transactional
-//    public Doctors updateDoctor(String crm, Doctors doctor) {
-//
-//            Doctors doctors = doctorsRepository.findByCrm(crm);
-//
-//            if (doctor != null && doctors != null) {
-//                if (doctor.getCellPhone() != null) {
-//                    doctors.setCellPhone(doctor.getCellPhone());
-//                }
-//                if (doctor.getCrm() != null) {
-//                    doctors.setCrm(doctor.getCrm());
-//                }
-//                if (doctor.getName() != null) {
-//                    doctors.setName(doctor.getName());
-//                }
-//                if (doctor.getSpecialty() != null) {
-//                    doctors.setSpecialty(doctor.getSpecialty());
-//                }
-//                if(doctor.getActive() != null) {
-//                    doctors.setActive(doctor.getActive());
-//                }
-//
-//                return doctorsRepository.save(doctors);
-//            } else {
-//                throw new ValidationException("User not found");
-//            }
-//        }
-    }
-
-
-
-
-
+}

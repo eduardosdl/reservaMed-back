@@ -23,6 +23,11 @@ public class DoctorsController {
         return ResponseEntity.ok(service.listAll());
     }
 
+    @GetMapping("/id/{id}")
+    public ResponseEntity<Doctor> getById(@PathVariable Long id) {
+        return ResponseEntity.ok(service.getById(id));
+    }
+
     @GetMapping("/{crm}")
     public ResponseEntity<Doctor> getByCrm(@PathVariable String crm){
         return ResponseEntity.ok(service.getByCrm(crm));
@@ -34,15 +39,16 @@ public class DoctorsController {
         return ResponseEntity.ok(service.create(data));
     }
 
-//    @Transactional
-//    @DeleteMapping("/{crm}")
-//    public void deleteDoctor(@PathVariable String crm) {
-//        service.dellDoctor(crm);
-//    }
+    @Transactional
+    @PutMapping("/{crm}")
+    public ResponseEntity<Doctor> update(@PathVariable String crm, @RequestBody @Valid RequestDoctorDTO data) {
+        return ResponseEntity.ok(service.update(crm, data));
+    }
 
-//    @Transactional
-//    @PutMapping("/{crm}")
-//    public ResponseEntity updateDoctor(@PathVariable String crm ,@RequestBody Doctors doctor) {
-//        return ResponseEntity.ok(service.updateDoctor(crm,doctor));
-//    }
+    @Transactional
+    @DeleteMapping("/{crm}")
+    public ResponseEntity<Void> delete(@PathVariable String crm) {
+        service.deleteByCrm(crm);
+        return ResponseEntity.ok().build();
+    }
 }
