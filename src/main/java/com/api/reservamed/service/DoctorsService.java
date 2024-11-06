@@ -18,7 +18,7 @@ public class DoctorsService {
 
     public List<Doctor> listAll() {
         try {
-            return repository.findAll();
+            return repository.findAllByActiveTrue();
         } catch (Exception e) {
             throw new RuntimeException("Houve um erro ao buscar médicos");
         }
@@ -83,9 +83,7 @@ public class DoctorsService {
 
     public void deleteByCrm(String crm) {
         try {
-            repository.findByCrm(crm).ifPresent(existingDoctor -> {
-                existingDoctor.setActive(false);
-            });
+            repository.findByCrm(crm).ifPresent(existingDoctor -> existingDoctor.setActive(false));
         } catch (Exception e) {
             throw new RuntimeException("Houve um erro ao tentar excluir médico");
         }
