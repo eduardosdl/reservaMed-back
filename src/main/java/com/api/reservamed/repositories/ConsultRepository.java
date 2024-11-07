@@ -25,6 +25,9 @@ public interface ConsultRepository extends JpaRepository<Consult, Long> {
     List<Consult> findByPatientCpf(String cpf);
     List<Consult> findByStatusNot(String status);
 
+    @Query("SELECT c FROM consult c WHERE c.doctor.crm = :crm AND DATE(c.date) = DATE(:date)")
+    List<Consult> findByDoctorCrmAndDate(@Param("crm") String crm, @Param("date") LocalDateTime date);
+
     @Query("""
             select c from consult c
             where status = 'A'
