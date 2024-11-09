@@ -2,9 +2,9 @@ package com.api.reservamed.controller;
 
 import com.api.reservamed.dtos.RequestDoctorDTO;
 import com.api.reservamed.dtos.ResponseDoctorScheduleDTO;
-import com.api.reservamed.model.Consult;
+import com.api.reservamed.model.Appointment;
 import com.api.reservamed.model.Doctor;
-import com.api.reservamed.service.ConsultService;
+import com.api.reservamed.service.AppointmentService;
 import com.api.reservamed.service.DoctorsService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -24,7 +24,7 @@ public class DoctorsController {
     DoctorsService service;
 
     @Autowired
-    ConsultService consultService;
+    AppointmentService appointmentService;
 
     @GetMapping
     public ResponseEntity<List<Doctor>> getAll(){
@@ -48,8 +48,8 @@ public class DoctorsController {
         if (date == null) {
             date = LocalDateTime.now();
         }
-        List<Consult> consults = consultService.getConsultsByDoctorCrmAndDate(crm, date);
-        return ResponseEntity.ok(ResponseDoctorScheduleDTO.fromConsults(consults));
+        List<Appointment> appointments = appointmentService.getAppointmentByDoctorCrmAndDate(crm, date);
+        return ResponseEntity.ok(ResponseDoctorScheduleDTO.fromConsults(appointments));
     }
 
 

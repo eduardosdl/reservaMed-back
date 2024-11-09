@@ -1,6 +1,6 @@
 package com.api.reservamed.repositories;
 
-import com.api.reservamed.model.Consult;
+import com.api.reservamed.model.Appointment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
-public interface ConsultRepository extends JpaRepository<Consult, Long> {
+public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
 
     @Query("""
     select case when count(c) > 0 then false else true end
@@ -21,17 +21,16 @@ public interface ConsultRepository extends JpaRepository<Consult, Long> {
     """)
     boolean consultaDisponibilidadeMedicoNoHorario(@Param("id_medico") Long id_medico, @Param("date") LocalDateTime date);
 
-    List<Consult> findAllById(Long id);
-    List<Consult> findByPatientCpf(String cpf);
-    List<Consult> findByStatusNot(String status);
+    List<Appointment> findByPatientCpf(String cpf);
+    List<Appointment> findByStatusNot(String status);
 
     @Query("SELECT c FROM consult c WHERE c.doctor.crm = :crm AND DATE(c.date) = DATE(:date)")
-    List<Consult> findByDoctorCrmAndDate(@Param("crm") String crm, @Param("date") LocalDateTime date);
+    List<Appointment> findByDoctorCrmAndDate(@Param("crm") String crm, @Param("date") LocalDateTime date);
 
     @Query("""
             select c from consult c
             where status = 'A'
             """)
-    List<Consult> findAllActive();
+    List<Appointment> findAllActive();
 
 }

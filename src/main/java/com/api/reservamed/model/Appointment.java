@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
-public class Consult {
+public class Appointment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,7 +37,9 @@ public class Consult {
 
     private String status;
 
-    public Consult(Doctor doctor, Patient patient, LocalDateTime date, TypeConsult type) {
+    private String description;
+
+    public Appointment(Doctor doctor, Patient patient, LocalDateTime date, TypeConsult type) {
         this.doctor = doctor;
         this.patient = patient;
         this.date = date;
@@ -45,7 +47,7 @@ public class Consult {
         this.type_consult = type.getDescription();
     }
 
-    public Consult(Long id, Doctor doctor, Patient patient, LocalDateTime date, TypeConsult type) {
+    public Appointment(Long id, Doctor doctor, Patient patient, LocalDateTime date, TypeConsult type) {
         this.id = id;
         this.doctor = doctor;
         this.patient = patient;

@@ -6,6 +6,8 @@ import com.api.reservamed.repositories.QueueRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 @Service
 public class QueueService {
 
@@ -16,8 +18,15 @@ public class QueueService {
         try{
             queueRepository.save(queue);
         }catch (Exception e){
-            throw new ValidationException("Error: " + e.getMessage());
+            throw new ValidationException("Houve um erro ao inserir na fila de espera");
         }
+    }
 
+    public int positionQueue(Long doctorId, LocalDateTime date){
+        try {
+            return queueRepository.posicaoFila(doctorId, date);
+        } catch (Exception e) {
+            throw new ValidationException("Houve um erro ao buscar a posição na fila de espera");
+        }
     }
 }

@@ -1,0 +1,1 @@
+alter table consult add column description varchar(255);
