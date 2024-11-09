@@ -26,17 +26,17 @@ public class DoctorsService {
 
     public Doctor getById(Long id) {
         try {
-            return repository.findById(id).orElseThrow(EntityNotFoundException::new);
+            return repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Médico não encontrado"));
         } catch (EntityNotFoundException e) {
             throw e;
         } catch (Exception e) {
-            throw new RuntimeException("Houve um erro ao buscar CRM");
+            throw new RuntimeException("Houve um erro ao buscar médico");
         }
     }
 
     public Doctor getByCrm(String crm) {
         try {
-            return repository.findByCrm(crm).orElseThrow(EntityNotFoundException::new);
+            return repository.findByCrm(crm).orElseThrow(() -> new EntityNotFoundException("Médico não encontrado"));
         } catch (EntityNotFoundException e) {
             throw e;
         } catch (Exception e) {

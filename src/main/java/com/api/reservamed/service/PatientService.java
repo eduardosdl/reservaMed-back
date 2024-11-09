@@ -5,6 +5,7 @@ import com.api.reservamed.dtos.UpdatePatientDTO;
 import com.api.reservamed.infra.exception.ValidationException;
 import com.api.reservamed.model.Patient;
 import com.api.reservamed.repositories.PatientRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +23,7 @@ public class PatientService {
 
     public Patient getByCpf(String cpf) {
         return repository.findByCpf(cpf)
-                .orElseThrow(() -> new ValidationException("Paciente não encontrado"));
+                .orElseThrow(() -> new EntityNotFoundException("Paciente não encontrado"));
     }
 
     public Patient create(CreatePatientDTO patientData) {
@@ -42,7 +43,7 @@ public class PatientService {
     public Patient update(Long id, UpdatePatientDTO patientData) {
         try {
             Patient existingPatient = repository.findById(id)
-                    .orElseThrow(() -> new ValidationException("Paciente não encontrado"));
+                    .orElseThrow(() -> new EntityNotFoundException("Paciente não encontrado"));
 
 
             if (patientData.cpf() != null && !patientData.cpf().equals(existingPatient.getCpf())) {
