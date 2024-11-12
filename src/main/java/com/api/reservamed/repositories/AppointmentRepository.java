@@ -23,6 +23,8 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
 
     List<Appointment> findByPatientCpf(String cpf);
 
+    List<Appointment> findByDoctorCrmAndPatientCpfAndStatus(String crm, String cpf, String status);
+
     @Query("SELECT COUNT(c) FROM consult c WHERE c.doctor.crm = :crm AND DATE(c.date) = DATE(:date) AND c.status = :status")
     long countByDoctorCrmAndDateAndStatus(@Param("crm") String crm, @Param("status") String status, @Param("date") LocalDateTime date);
 

@@ -41,8 +41,8 @@ public class DoctorsController {
         return ResponseEntity.ok(service.getByCrm(crm));
     }
 
-    @GetMapping("/{crm}/consults")
-    public ResponseEntity<ResponseDoctorScheduleDTO> getConsultsByCrmAndDate(
+    @GetMapping("/{crm}/appointments")
+    public ResponseEntity<ResponseDoctorScheduleDTO> getAppointmentsByCrmAndDate(
             @PathVariable @Valid String crm,
             @RequestParam(required = false) String status,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime date) {
@@ -56,8 +56,8 @@ public class DoctorsController {
         }
 
         List<Appointment> appointments = appointmentService.getAppointmentByDoctorCrmAndStatusAndDate(crm, status, date);
-        long attendedCount = appointmentService.countAppointmentByDoctorCrmAndStatusAndDate(crm, "A", date);
-        long pendingCount = appointmentService.countAppointmentByDoctorCrmAndStatusAndDate(crm, "P", date);
+        long attendedCount = appointmentService.countAppointmentByDoctorCrmAndStatusAndDate(crm, "P", date);
+        long pendingCount = appointmentService.countAppointmentByDoctorCrmAndStatusAndDate(crm, "A", date);
 
         return ResponseEntity.ok(new ResponseDoctorScheduleDTO(
                 attendedCount,
@@ -66,6 +66,10 @@ public class DoctorsController {
         ));
     }
 
+    @GetMapping("/{crm}/patient/{cpf}/appointments")
+    public ResponseEntity<List<Appointment>> getAppointmentByDoctorCrmAndPatientCpf(@PathVariable String crm, @PathVariable String cpf) {
+        return ResponseEntity.ok(appointmentService.getAppointmentCompletedByDoctorCrmAndPatientCpf(crm, cpf));
+    }
 
     @Transactional
     @PostMapping
