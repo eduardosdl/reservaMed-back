@@ -27,7 +27,7 @@ public class DoctorsController {
     AppointmentService appointmentService;
 
     @GetMapping
-    public ResponseEntity<List<Doctor>> getAll(){
+    public ResponseEntity<List<Doctor>> getAll() {
         return ResponseEntity.ok(service.listAll());
     }
 
@@ -37,26 +37,39 @@ public class DoctorsController {
     }
 
     @GetMapping("/{crm}")
-    public ResponseEntity<Doctor> getByCrm(@PathVariable String crm){
+    public ResponseEntity<Doctor> getByCrm(@PathVariable String crm) {
         return ResponseEntity.ok(service.getByCrm(crm));
     }
 
     @GetMapping("/{crm}/consults")
-    public ResponseEntity<ResponseDoctorScheduleDTO> getConsultsByCrmAndDate (
-        @PathVariable @Valid String crm,
-        @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime date) {
+    public ResponseEntity<ResponseDoctorScheduleDTO> getConsultsByCrmAndDate(
+            @PathVariable @Valid String crm,
+            @RequestParam(required = false) String status,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime date) {
+
         if (date == null) {
             date = LocalDateTime.now();
         }
-        List<Appointment> appointments = appointmentService.getAppointmentByDoctorCrmAndDate(crm, date);
-        return ResponseEntity.ok(ResponseDoctorScheduleDTO.fromConsults(appointments));
-    }
 
+        if (status == null) {
+            status = "A";
+        }
+
+        List<Appointment> appointments = appointmentService.getAppointmentByDoctorCrmAndStatusAndDate(crm, status, date);
+        long attendedCount = appointmentService.countAppointmentByDoctorCrmAndStatusAndDate(crm, "A", date);
+        long pendingCount = appointmentService.countAppointmentByDoctorCrmAndStatusAndDate(crm, "P", date);
+
+        return ResponseEntity.ok(new ResponseDoctorScheduleDTO(
+                attendedCount,
+                pendingCount,
+                appointments
+        ));
+    }
 
 
     @Transactional
     @PostMapping
-    public ResponseEntity<Doctor> create(@RequestBody @Valid RequestDoctorDTO data){
+    public ResponseEntity<Doctor> create(@RequestBody @Valid RequestDoctorDTO data) {
         return ResponseEntity.ok(service.create(data));
     }
 

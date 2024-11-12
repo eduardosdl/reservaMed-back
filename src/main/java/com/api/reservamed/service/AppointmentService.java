@@ -59,15 +59,27 @@ public class AppointmentService {
         return repository.findByPatientCpf(cpf);
     }
 
-    public List<Appointment> getAppointmentByDoctorCrmAndDate(String crm, LocalDateTime date) {
+
+
+    public List<Appointment> getAppointmentByDoctorCrmAndStatusAndDate(String crm, String status, LocalDateTime date) {
         try {
             var doctor = doctorsService.getByCrm(crm);
-
-            return repository.findByDoctorCrmAndDate(doctor.getCrm(), date);
+            return repository.findByDoctorCrmAndDateAndStatus(doctor.getCrm(), status, date);
         } catch (EntityNotFoundException e) {
             throw e;
         } catch (Exception e) {
             throw new RuntimeException("Houve um erro ao buscar consultas");
+        }
+    }
+
+    public long countAppointmentByDoctorCrmAndStatusAndDate(String crm, String status, LocalDateTime date) {
+        try {
+            var doctor = doctorsService.getByCrm(crm);
+            return repository.countByDoctorCrmAndDateAndStatus(doctor.getCrm(), status, date);
+        } catch (EntityNotFoundException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new RuntimeException("Houve um erro ao contar consultas");
         }
     }
 

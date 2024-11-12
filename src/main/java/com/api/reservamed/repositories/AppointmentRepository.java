@@ -22,10 +22,12 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
     boolean consultaDisponibilidadeMedicoNoHorario(@Param("id_medico") Long id_medico, @Param("date") LocalDateTime date);
 
     List<Appointment> findByPatientCpf(String cpf);
-    List<Appointment> findByStatusNot(String status);
 
-    @Query("SELECT c FROM consult c WHERE c.doctor.crm = :crm AND DATE(c.date) = DATE(:date)")
-    List<Appointment> findByDoctorCrmAndDate(@Param("crm") String crm, @Param("date") LocalDateTime date);
+    @Query("SELECT COUNT(c) FROM consult c WHERE c.doctor.crm = :crm AND DATE(c.date) = DATE(:date) AND c.status = :status")
+    long countByDoctorCrmAndDateAndStatus(@Param("crm") String crm, @Param("status") String status, @Param("date") LocalDateTime date);
+
+    @Query("SELECT c FROM consult c WHERE c.doctor.crm = :crm AND DATE(c.date) = DATE(:date) AND c.status = :status")
+    List<Appointment> findByDoctorCrmAndDateAndStatus(@Param("crm") String crm, @Param("status") String status, @Param("date") LocalDateTime date);
 
     @Query("""
             select c from consult c
