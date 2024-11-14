@@ -1,0 +1,1 @@
+alter table consult alter column description TEXT;
