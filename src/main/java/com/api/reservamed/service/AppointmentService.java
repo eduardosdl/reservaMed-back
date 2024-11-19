@@ -7,14 +7,12 @@ import com.api.reservamed.infra.exception.ValidationException;
 import com.api.reservamed.model.Appointment;
 import com.api.reservamed.repositories.AppointmentRepository;
 import com.api.reservamed.repositories.PatientRepository;
-import com.api.reservamed.service.appointment.CancellationService;
-import com.api.reservamed.service.appointment.CompletionService;
-import com.api.reservamed.service.appointment.ReschedulingService;
-import com.api.reservamed.service.appointment.SchedulingService;
+import com.api.reservamed.service.appointment.*;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -28,6 +26,9 @@ public class AppointmentService {
 
     @Autowired
     DoctorsService doctorsService;
+
+    @Autowired
+    ScheduleAvailabilityService scheduleAvailabilityService;
 
     @Autowired
     SchedulingService schedulingService;
@@ -75,6 +76,17 @@ public class AppointmentService {
             throw e;
         } catch (Exception e) {
             throw new RuntimeException("Houve um erro ao buscar consultas");
+        }
+    }
+
+    public List<String> getAvailableTimes(Long doctorId, LocalDate date) {
+        try {
+            var doctor = doctorsService.getById(doctorId);
+            return scheduleAvailabilityService.execute(doctor.getId(), date);
+        } catch (EntityNotFoundException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new RuntimeException("Houve um erro ao buscar horários disponíveis");
         }
     }
 
