@@ -49,6 +49,14 @@ public class AppointmentService {
         }
     }
 
+    public List<Appointment> getAllRecord() {
+        try {
+            return repository.findAllCompletedOrPendingOrCancelled();
+        } catch (Exception e) {
+            throw new RuntimeException("Houve um erro ao buscar consultas");
+        }
+    }
+
     public List<Appointment> getAppointmentByPatientCpf(String cpf) {
         var patientExists = patientRepository.existsByCpf(cpf);
 

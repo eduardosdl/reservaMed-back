@@ -32,6 +32,7 @@ public class CancellationService {
 
         appointment.setStatus("C");
         appointment.setCancellation_reason(cancellationData.reason());
+        appointment.setDate_cancellation(LocalDateTime.now());
         repository.save(appointment);
     }
 

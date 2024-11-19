@@ -37,4 +37,10 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
             """)
     List<Appointment> findAllActive();
 
+    @Query("""
+            select c from consult c
+            where c.status in ('P', 'C')
+            """)
+    List<Appointment> findAllCompletedOrPendingOrCancelled();
+
 }

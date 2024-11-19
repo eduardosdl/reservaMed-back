@@ -24,6 +24,11 @@ public class AppointmentController {
         return ResponseEntity.ok(appointmentService.listAllPending());
     }
 
+    @GetMapping("/record")
+    public ResponseEntity<List<Appointment>> getAllRecord() {
+        return ResponseEntity.ok(appointmentService.getAllRecord());
+    }
+
     @GetMapping("/{cpf}")
     public ResponseEntity<List<Appointment>> getByCpf(@PathVariable String cpf) {
         var consults = appointmentService.getAppointmentByPatientCpf(cpf);
