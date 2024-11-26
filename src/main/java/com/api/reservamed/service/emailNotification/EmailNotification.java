@@ -15,6 +15,8 @@ import org.springframework.mail.SimpleMailMessage;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
@@ -46,7 +48,10 @@ public class EmailNotification {
         var nomeDoctor = doctor.getName();
         var doctorSpecialty = doctor.getSpecialty();
 
-        validations.forEach(v -> v.validate(appointmentData));
+        LocalDateTime date = appointmentData.date();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+        String dataHoraStr = date.format(formatter);
+
 
         String[] primeitoNomeArray = nomePatient.split(" ");
         String primeitoNome = primeitoNomeArray[0];
@@ -64,8 +69,7 @@ public class EmailNotification {
             template = template.replace("#{nome}", primeitoNome);
             template = template.replace("#{nomeMedico}", nomeDoctor);
             template = template.replace("#{especialidade}", doctorSpecialty);
-            template = template.replace("#{dia}", primeitoNome);
-            template = template.replace("#{hora}", primeitoNome);
+            template = template.replace("#{dia}", dataHoraStr);
             help.setText(template,true);
             javaMailSender.send(mensagem);
 
