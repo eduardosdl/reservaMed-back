@@ -8,6 +8,7 @@ import com.api.reservamed.model.Appointment;
 import com.api.reservamed.repositories.AppointmentRepository;
 import com.api.reservamed.repositories.PatientRepository;
 import com.api.reservamed.service.appointment.*;
+import com.api.reservamed.service.emailNotification.EmailNotification;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,6 +42,8 @@ public class AppointmentService {
 
     @Autowired
     CompletionService completionService;
+    @Autowired
+    private EmailNotification emailNotification;
 
     public List<Appointment> listAllPending() {
         try {
@@ -114,6 +117,7 @@ public class AppointmentService {
 
     public Appointment scheduleAppointment(RequestAppointmentDTO appointmentData) {
         try {
+            emailNotification.enviarEmailCliente(appointmentData);
             return repository.save(schedulingService.execute(appointmentData));
         } catch (ValidationException | EntityNotFoundException e) {
             throw e;
